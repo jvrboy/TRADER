@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:TraderUI.ViewModels"
+             xmlns:models="clr-namespace:TraderUI.Models"
+             x:Class="TraderUI.Views.SignalsPage"
+             x:DataType="vm:SignalsViewModel"
+             Title="Signals">
+
+    <Grid RowDefinitions="Auto,Auto,*">
+
+        <!-- Top Bar -->
+        <Grid Grid.Row="0" BackgroundColor="{StaticResource BackgroundSurface}"
+              Padding="16,12" ColumnDefinitions="*,Auto">
+            <Label Grid.Column="0" Text="Signals" Style="{StaticResource HeadlineSmall}" VerticalOptions="Center"/>
+            <Button Grid.Column="1" Text="+ Generate" Style="{StaticResource SecondaryButton}"
+                    Command="{Binding GenerateSignalCommand}" CommandParameter="EURUSD"
+                    FontSize="13"/>
+        </Grid>
+
+        <!-- Tab Selector + Filters -->
+        <StackLayout Grid.Row="1" BackgroundColor="{StaticResource BackgroundSurface}" Padding="12,0,12,12">
+            <!-- LIVE / HISTORY Tabs -->
+            <Grid ColumnDefinitions="*,*" BackgroundColor="{StaticResource BackgroundInput}"
+                  CornerRadius="12" Padding="4" Margin="0,0,0,10">
+                <Button Grid.Column="0" Text="LIVE"
+                        BackgroundColor="{StaticResource Primary}"
+                        TextColor="{StaticResource BackgroundDark}"
+                        FontAttributes="Bold" FontSize="14"
+                        CornerRadius="8" HeightRequest="40"
+                        Command="{Binding RefreshCommand}"/>
+                <Button Grid.Column="1" Text="HISTORY"
+                        BackgroundColor="Transparent"
+                        TextColor="{StaticResource TextSecondary}"
+                        FontSize="14"
+                        CornerRadius="8" HeightRequest="40"
+                        Command="{Binding RefreshCommand}"/>
+            </Grid>
+
+            <!-- Category Filters -->
+            <ScrollView Orientation="Horizontal" HorizontalScrollBarVisibility="Never">
+                <FlexLayout BindableLayout.ItemsSource="{Binding Categories}" Direction="Row">
+                    <BindableLayout.ItemTemplate>
+                        <DataTemplate x:DataType="x:String">
+                            <Frame Style="{StaticResource ChipFrame}" Margin="0,0,8,0">
+                                <Label Text="{Binding .}" FontSize="13" TextColor="{StaticResource TextSecondary}"/>
+                            </Frame>
+                        </DataTemplate>
+                    </BindableLayout.ItemTemplate>
+                </FlexLayout>
+            </ScrollView>
+        </StackLayout>
+
+        <!-- Signals List -->
+        <RefreshView Grid.Row="2"
+                     Command="{Binding RefreshCommand}"
+                     IsRefreshing="{Binding IsBusy}"
+                     RefreshColor="{StaticResource Primary}">
+            <CollectionView ItemsSource="{Binding LiveSignals}" Margin="12,8">
+                <CollectionView.EmptyView>
+                    <StackLayout HorizontalOptions="Center" VerticalOptions="Center" Spacing="12" Margin="0,60,0,0">
+                        <Label Text="📡" FontSize="48" HorizontalOptions="Center"/>
+                        <Label Text="No live signals right now" Style="{StaticResource HeadlineSmall}" HorizontalOptions="Center"/>
+                        <Label Text="Tap '+ Generate' to create a signal" Style="{StaticResource BodyMedium}" HorizontalOptions="Center"/>
+                    </StackLayout>
+                </CollectionView.EmptyView>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="models:Signal">
+                        <Frame Style="{StaticResource Card}" Margin="0,4">
+                            <StackLayout Spacing="10">
+                                <!-- Header Row -->
+                                <Grid ColumnDefinitions="Auto,*,Auto,Auto">
+                                    <!-- Direction Badge -->
+                                    <Frame Grid.Column="0" Padding="8,4" CornerRadius="8" HasShadow="False"
+                                           BackgroundColor="{Binding Direction, Converter={StaticResource DirectionToColorConverter}}">
+                                        <Label Text="{Binding DirectionLabel}"
+                                               TextColor="{StaticResource BackgroundDark}"
+                                               FontAttributes="Bold" FontSize="13"/>
+                                    </Frame>
+
+                                    <!-- Symbol + Timeframe -->
+                                    <StackLayout Grid.Column="1" Margin="10,0">
+                                        <Label Text="{Binding Symbol}" Style="{StaticResource TitleMedium}"/>
+                                        <Label Text="{Binding Timeframe, StringFormat='TF: {0}m'}" Style="{StaticResource BodySmall}"/>
+                                    </StackLayout>
+
+                                    <!-- Confidence -->
+                                    <StackLayout Grid.Column="2" HorizontalOptions="End" Margin="0,0,8,0">
+                                        <Label Text="{Binding Confidence}" Style="{StaticResource AccentLabel}" HorizontalOptions="End"/>
+                                        <Label Text="{Binding ConfidenceScore, StringFormat='{0:F0}%'}"
+                                               FontSize="13" FontAttributes="Bold"
+                                               TextColor="{StaticResource Success}" HorizontalOptions="End"/>
+                                    </StackLayout>
+
+                                    <!-- Time Ago -->
+                                    <Label Grid.Column="3" Text="{Binding TimeAgo}"
+                                           Style="{StaticResource BodySmall}" VerticalOptions="Center"/>
+                                </Grid>
+
+                                <!-- Divider -->
+                                <BoxView Style="{StaticResource Separator}"/>
+
+                                <!-- Levels Grid -->
+                                <Grid ColumnDefinitions="*,*,*" RowDefinitions="Auto,Auto">
+                                    <StackLayout Grid.Column="0">
+                                        <Label Text="ENTRY" Style="{StaticResource BodySmall}"/>
+                                        <Label Text="{Binding EntryZone}" FontSize="12" TextColor="{StaticResource TextPrimary}"/>
+                                    </StackLayout>
+                                    <StackLayout Grid.Column="1">
+                                        <Label Text="STOP LOSS" Style="{StaticResource BodySmall}"/>
+                                        <Label Text="{Binding StopLoss, StringFormat='{0:F5}'}"
+                                               FontSize="12" TextColor="{StaticResource Danger}" FontAttributes="Bold"/>
+                                    </StackLayout>
+                                    <StackLayout Grid.Column="2">
+                                        <Label Text="TAKE PROFIT" Style="{StaticResource BodySmall}"/>
+                                        <Label Text="{Binding TakeProfit1, StringFormat='{0:F5}'}"
+                                               FontSize="12" TextColor="{StaticResource Success}" FontAttributes="Bold"/>
+                                    </StackLayout>
+                                </Grid>
+
+                                <!-- Strategy Tag -->
+                                <Label Text="{Binding Strategy, StringFormat='Strategy: {0}'}"
+                                       Style="{StaticResource BodySmall}"/>
+
+                                <!-- Action Buttons -->
+                                <Grid ColumnDefinitions="*,*,*" ColumnSpacing="8">
+                                    <Button Grid.Column="0" Text="📈 Chart" Style="{StaticResource SecondaryButton}"
+                                            FontSize="12" HeightRequest="36"/>
+                                    <Button Grid.Column="1" Text="🔔 Alert" Style="{StaticResource SecondaryButton}"
+                                            FontSize="12" HeightRequest="36"/>
+                                    <Button Grid.Column="2" Text="💾 Save" Style="{StaticResource SecondaryButton}"
+                                            FontSize="12" HeightRequest="36"
+                                            Command="{Binding Source={RelativeSource AncestorType={x:Type vm:SignalsViewModel}}, Path=SaveSignalCommand}"
+                                            CommandParameter="{Binding .}"/>
+                                </Grid>
+                            </StackLayout>
+                        </Frame>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </RefreshView>
+    </Grid>
+</ContentPage>

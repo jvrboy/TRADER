@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:TraderUI.ViewModels"
+             xmlns:models="clr-namespace:TraderUI.Models"
+             x:Class="TraderUI.Views.QuotesPage"
+             x:DataType="vm:QuotesViewModel"
+             Title="Quotes">
+
+    <Grid RowDefinitions="Auto,Auto,*">
+
+        <!-- Top Bar -->
+        <Grid Grid.Row="0" BackgroundColor="{StaticResource BackgroundSurface}"
+              Padding="16,12" ColumnDefinitions="*,Auto">
+            <Label Grid.Column="0" Text="Quotes" Style="{StaticResource HeadlineSmall}" VerticalOptions="Center"/>
+            <Button Grid.Column="1" Text="↻" Style="{StaticResource IconButton}"
+                    Command="{Binding RefreshCommand}"/>
+        </Grid>
+
+        <!-- Search + Filters -->
+        <StackLayout Grid.Row="1" BackgroundColor="{StaticResource BackgroundSurface}" Padding="12,0,12,12">
+            <!-- Search Bar -->
+            <Frame BackgroundColor="{StaticResource BackgroundInput}"
+                   BorderColor="{StaticResource BorderColor}"
+                   CornerRadius="12"
+                   Padding="12,0"
+                   Margin="0,0,0,10">
+                <Grid ColumnDefinitions="Auto,*">
+                    <Label Grid.Column="0" Text="🔍" FontSize="16" VerticalOptions="Center" Margin="0,0,8,0"
+                           TextColor="{StaticResource TextMuted}"/>
+                    <Entry Grid.Column="1" Style="{StaticResource SearchEntry}"
+                           Text="{Binding SearchText}"
+                           Placeholder="Search symbol, name..."
+                           HeightRequest="44"/>
+                </Grid>
+            </Frame>
+
+            <!-- Category Chips -->
+            <ScrollView Orientation="Horizontal" HorizontalScrollBarVisibility="Never">
+                <FlexLayout BindableLayout.ItemsSource="{Binding Categories}" Direction="Row">
+                    <BindableLayout.ItemTemplate>
+                        <DataTemplate x:DataType="x:String">
+                            <Frame Style="{StaticResource ChipFrame}" Margin="0,0,8,0">
+                                <Label Text="{Binding .}" FontSize="13" TextColor="{StaticResource TextSecondary}"/>
+                            </Frame>
+                        </DataTemplate>
+                    </BindableLayout.ItemTemplate>
+                </FlexLayout>
+            </ScrollView>
+        </StackLayout>
+
+        <!-- Quotes List -->
+        <RefreshView Grid.Row="2"
+                     Command="{Binding RefreshCommand}"
+                     IsRefreshing="{Binding IsBusy}"
+                     RefreshColor="{StaticResource Primary}">
+            <CollectionView ItemsSource="{Binding Quotes}" Margin="12,8">
+                <CollectionView.EmptyView>
+                    <StackLayout HorizontalOptions="Center" VerticalOptions="Center" Spacing="12" Margin="0,60,0,0">
+                        <Label Text="📊" FontSize="48" HorizontalOptions="Center"/>
+                        <Label Text="No quotes found" Style="{StaticResource HeadlineSmall}" HorizontalOptions="Center"/>
+                        <Label Text="Try a different search or category" Style="{StaticResource BodyMedium}" HorizontalOptions="Center"/>
+                    </StackLayout>
+                </CollectionView.EmptyView>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="models:Quote">
+                        <Frame Style="{StaticResource Card}" Margin="0,4">
+                            <Grid ColumnDefinitions="*,Auto,Auto" RowDefinitions="Auto,Auto">
+                                <!-- Symbol + Name -->
+                                <StackLayout Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" VerticalOptions="Center">
+                                    <Label Text="{Binding Symbol}" Style="{StaticResource TitleMedium}"/>
+                                    <Label Text="{Binding Name}" Style="{StaticResource BodySmall}"/>
+                                    <Frame BackgroundColor="{StaticResource BackgroundInput}"
+                                           BorderColor="Transparent"
+                                           CornerRadius="6" Padding="6,2" HasShadow="False"
+                                           HorizontalOptions="Start">
+                                        <Label Text="{Binding Category}" FontSize="11" TextColor="{StaticResource TextMuted}"/>
+                                    </Frame>
+                                </StackLayout>
+
+                                <!-- Price + Change -->
+                                <StackLayout Grid.Column="1" Grid.Row="0" Grid.RowSpan="2"
+                                             VerticalOptions="Center" HorizontalOptions="End" Margin="0,0,12,0">
+                                    <Label Text="{Binding PriceDisplay}" Style="{StaticResource TitleMedium}"
+                                           HorizontalOptions="End"/>
+                                    <Label Text="{Binding ChangePercentDisplay}"
+                                           TextColor="{Binding IsPositive, Converter={StaticResource BoolToColorConverter}}"
+                                           FontSize="13" FontAttributes="Bold"
+                                           HorizontalOptions="End"/>
+                                </StackLayout>
+
+                                <!-- Favorite Star -->
+                                <Button Grid.Column="2" Grid.Row="0" Grid.RowSpan="2"
+                                        Text="{Binding IsFavorite, Converter={StaticResource BoolToStarConverter}}"
+                                        FontSize="20"
+                                        BackgroundColor="Transparent"
+                                        TextColor="{StaticResource Warning}"
+                                        Padding="4"
+                                        CommandParameter="{Binding .}"/>
+                            </Grid>
+                        </Frame>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </RefreshView>
+    </Grid>
+</ContentPage>

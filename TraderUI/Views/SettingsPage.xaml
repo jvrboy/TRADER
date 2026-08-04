@@ -1,0 +1,356 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:TraderUI.ViewModels"
+             xmlns:models="clr-namespace:TraderUI.Models"
+             x:Class="TraderUI.Views.SettingsPage"
+             x:DataType="vm:SettingsViewModel"
+             Title="Settings">
+
+    <Grid RowDefinitions="Auto,*,Auto">
+        <!-- Header -->
+        <Grid Grid.Row="0" BackgroundColor="{StaticResource BackgroundSurface}"
+              Padding="16,12" ColumnDefinitions="Auto,*">
+            <Button Grid.Column="0" Text="←" Style="{StaticResource IconButton}"
+                    Clicked="OnBackClicked"/>
+            <Label Grid.Column="1" Text="Settings" Style="{StaticResource HeadlineSmall}" VerticalOptions="Center"/>
+        </Grid>
+
+        <!-- Settings Content -->
+        <ScrollView Grid.Row="1">
+            <StackLayout Padding="16" Spacing="16">
+
+                <!-- ==================== AI API PROVIDERS ==================== -->
+                <Label Text="AI API Providers" Style="{StaticResource HeadlineSmall}" Margin="0,8,0,4"/>
+
+                <Frame Style="{StaticResource Card}">
+                    <StackLayout Spacing="16">
+                        <Label Text="Default AI Provider" Style="{StaticResource TitleMedium}"/>
+                        <Picker ItemsSource="{Binding AiProviders}"
+                                SelectedItem="{Binding AppSettings.SelectedAiProvider}"
+                                Title="Select Provider"/>
+
+                        <BoxView Style="{StaticResource Separator}"/>
+
+                        <!-- OpenAI -->
+                        <StackLayout>
+                            <Label Text="OpenAI" Style="{StaticResource TitleMedium}"/>
+                            <Label Text="GPT-4o, GPT-4 Turbo, GPT-3.5" Style="{StaticResource BodySmall}"/>
+                            <Entry Text="{Binding AppSettings.OpenAiApiKey}"
+                                   Placeholder="sk-..." IsPassword="True"
+                                   Style="{StaticResource SearchEntry}" Margin="0,6,0,0"/>
+                        </StackLayout>
+
+                        <BoxView Style="{StaticResource Separator}"/>
+
+                        <!-- Anthropic -->
+                        <StackLayout>
+                            <Label Text="Anthropic (Claude)" Style="{StaticResource TitleMedium}"/>
+                            <Label Text="Claude 3.5 Sonnet, Claude 3 Opus" Style="{StaticResource BodySmall}"/>
+                            <Entry Text="{Binding AppSettings.AnthropicApiKey}"
+                                   Placeholder="sk-ant-..." IsPassword="True"
+                                   Style="{StaticResource SearchEntry}" Margin="0,6,0,0"/>
+                        </StackLayout>
+
+                        <BoxView Style="{StaticResource Separator}"/>
+
+                        <!-- Gemini -->
+                        <StackLayout>
+                            <Label Text="Google Gemini" Style="{StaticResource TitleMedium}"/>
+                            <Label Text="Gemini 1.5 Pro, Gemini Flash" Style="{StaticResource BodySmall}"/>
+                            <Entry Text="{Binding AppSettings.GeminiApiKey}"
+                                   Placeholder="AIza..." IsPassword="True"
+                                   Style="{StaticResource SearchEntry}" Margin="0,6,0,0"/>
+                        </StackLayout>
+
+                        <BoxView Style="{StaticResource Separator}"/>
+
+                        <!-- Grok -->
+                        <StackLayout>
+                            <Label Text="xAI Grok" Style="{StaticResource TitleMedium}"/>
+                            <Label Text="Grok Beta, Grok Vision" Style="{StaticResource BodySmall}"/>
+                            <Entry Text="{Binding AppSettings.GrokApiKey}"
+                                   Placeholder="xai-..." IsPassword="True"
+                                   Style="{StaticResource SearchEntry}" Margin="0,6,0,0"/>
+                        </StackLayout>
+
+                        <BoxView Style="{StaticResource Separator}"/>
+
+                        <!-- DeepSeek -->
+                        <StackLayout>
+                            <Label Text="DeepSeek" Style="{StaticResource TitleMedium}"/>
+                            <Label Text="DeepSeek Chat, DeepSeek Coder, Reasoner" Style="{StaticResource BodySmall}"/>
+                            <Entry Text="{Binding AppSettings.DeepSeekApiKey}"
+                                   Placeholder="sk-..." IsPassword="True"
+                                   Style="{StaticResource SearchEntry}" Margin="0,6,0,0"/>
+                        </StackLayout>
+
+                        <BoxView Style="{StaticResource Separator}"/>
+
+                        <!-- Mistral -->
+                        <StackLayout>
+                            <Label Text="Mistral AI" Style="{StaticResource TitleMedium}"/>
+                            <Label Text="Mistral Large, Mixtral 8x7B" Style="{StaticResource BodySmall}"/>
+                            <Entry Text="{Binding AppSettings.MistralApiKey}"
+                                   Placeholder="..." IsPassword="True"
+                                   Style="{StaticResource SearchEntry}" Margin="0,6,0,0"/>
+                        </StackLayout>
+
+                        <BoxView Style="{StaticResource Separator}"/>
+
+                        <!-- Cohere -->
+                        <StackLayout>
+                            <Label Text="Cohere" Style="{StaticResource TitleMedium}"/>
+                            <Label Text="Command R+, Command R" Style="{StaticResource BodySmall}"/>
+                            <Entry Text="{Binding AppSettings.CohereApiKey}"
+                                   Placeholder="..." IsPassword="True"
+                                   Style="{StaticResource SearchEntry}" Margin="0,6,0,0"/>
+                        </StackLayout>
+
+                        <BoxView Style="{StaticResource Separator}"/>
+
+                        <!-- Together AI -->
+                        <StackLayout>
+                            <Label Text="Together AI" Style="{StaticResource TitleMedium}"/>
+                            <Label Text="Llama 3, Mixtral, and 50+ open models" Style="{StaticResource BodySmall}"/>
+                            <Entry Text="{Binding AppSettings.TogetherApiKey}"
+                                   Placeholder="..." IsPassword="True"
+                                   Style="{StaticResource SearchEntry}" Margin="0,6,0,0"/>
+                        </StackLayout>
+
+                        <BoxView Style="{StaticResource Separator}"/>
+
+                        <!-- Perplexity -->
+                        <StackLayout>
+                            <Label Text="Perplexity AI" Style="{StaticResource TitleMedium}"/>
+                            <Label Text="Sonar Large Online (real-time web search)" Style="{StaticResource BodySmall}"/>
+                            <Entry Text="{Binding AppSettings.PerplexityApiKey}"
+                                   Placeholder="pplx-..." IsPassword="True"
+                                   Style="{StaticResource SearchEntry}" Margin="0,6,0,0"/>
+                        </StackLayout>
+
+                        <BoxView Style="{StaticResource Separator}"/>
+
+                        <!-- HuggingFace -->
+                        <StackLayout>
+                            <Label Text="HuggingFace" Style="{StaticResource TitleMedium}"/>
+                            <Label Text="Access thousands of open-source models" Style="{StaticResource BodySmall}"/>
+                            <Entry Text="{Binding AppSettings.HuggingFaceApiKey}"
+                                   Placeholder="hf_..." IsPassword="True"
+                                   Style="{StaticResource SearchEntry}" Margin="0,6,0,0"/>
+                        </StackLayout>
+                    </StackLayout>
+                </Frame>
+
+                <!-- ==================== BROKER / DATA APIs ==================== -->
+                <Label Text="Broker &amp; Market Data APIs" Style="{StaticResource HeadlineSmall}" Margin="0,8,0,4"/>
+
+                <Frame Style="{StaticResource Card}">
+                    <StackLayout Spacing="16">
+                        <!-- Deriv -->
+                        <StackLayout>
+                            <Label Text="Deriv (Binary.com)" Style="{StaticResource TitleMedium}"/>
+                            <Label Text="Live trading, Synthetics, Forex, Crypto" Style="{StaticResource BodySmall}"/>
+                            <Entry Text="{Binding AppSettings.DerivApiKey}"
+                                   Placeholder="Your Deriv API token" IsPassword="True"
+                                   Style="{StaticResource SearchEntry}" Margin="0,6,0,0"/>
+                        </StackLayout>
+
+                        <BoxView Style="{StaticResource Separator}"/>
+
+                        <!-- TwelveData -->
+                        <StackLayout>
+                            <Label Text="TwelveData" Style="{StaticResource TitleMedium}"/>
+                            <Label Text="Real-time stocks, forex, crypto OHLC" Style="{StaticResource BodySmall}"/>
+                            <Entry Text="{Binding AppSettings.TwelveDataApiKey}"
+                                   Placeholder="..." IsPassword="True"
+                                   Style="{StaticResource SearchEntry}" Margin="0,6,0,0"/>
+                        </StackLayout>
+
+                        <BoxView Style="{StaticResource Separator}"/>
+
+                        <!-- AlphaVantage -->
+                        <StackLayout>
+                            <Label Text="Alpha Vantage" Style="{StaticResource TitleMedium}"/>
+                            <Label Text="Stocks, forex, crypto, economic data" Style="{StaticResource BodySmall}"/>
+                            <Entry Text="{Binding AppSettings.AlphaVantageApiKey}"
+                                   Placeholder="..." IsPassword="True"
+                                   Style="{StaticResource SearchEntry}" Margin="0,6,0,0"/>
+                        </StackLayout>
+
+                        <BoxView Style="{StaticResource Separator}"/>
+
+                        <!-- Binance -->
+                        <StackLayout>
+                            <Label Text="Binance" Style="{StaticResource TitleMedium}"/>
+                            <Label Text="Crypto trading and market data" Style="{StaticResource BodySmall}"/>
+                            <Entry Text="{Binding AppSettings.BinanceApiKey}"
+                                   Placeholder="API Key" IsPassword="True"
+                                   Style="{StaticResource SearchEntry}" Margin="0,6,0,0"/>
+                            <Entry Text="{Binding AppSettings.BinanceSecretKey}"
+                                   Placeholder="Secret Key" IsPassword="True"
+                                   Style="{StaticResource SearchEntry}" Margin="0,4,0,0"/>
+                        </StackLayout>
+
+                        <BoxView Style="{StaticResource Separator}"/>
+
+                        <!-- Polygon.io -->
+                        <StackLayout>
+                            <Label Text="Polygon.io" Style="{StaticResource TitleMedium}"/>
+                            <Label Text="US stocks, options, forex, crypto" Style="{StaticResource BodySmall}"/>
+                            <Entry Text="{Binding AppSettings.PolygonApiKey}"
+                                   Placeholder="..." IsPassword="True"
+                                   Style="{StaticResource SearchEntry}" Margin="0,6,0,0"/>
+                        </StackLayout>
+
+                        <BoxView Style="{StaticResource Separator}"/>
+
+                        <!-- Finnhub -->
+                        <StackLayout>
+                            <Label Text="Finnhub" Style="{StaticResource TitleMedium}"/>
+                            <Label Text="Real-time stocks, news, earnings" Style="{StaticResource BodySmall}"/>
+                            <Entry Text="{Binding AppSettings.FinnhubApiKey}"
+                                   Placeholder="..." IsPassword="True"
+                                   Style="{StaticResource SearchEntry}" Margin="0,6,0,0"/>
+                        </StackLayout>
+
+                        <BoxView Style="{StaticResource Separator}"/>
+
+                        <!-- CoinGecko -->
+                        <StackLayout>
+                            <Label Text="CoinGecko" Style="{StaticResource TitleMedium}"/>
+                            <Label Text="Crypto prices, market cap, DeFi data" Style="{StaticResource BodySmall}"/>
+                            <Entry Text="{Binding AppSettings.CoinGeckoApiKey}"
+                                   Placeholder="CG-..." IsPassword="True"
+                                   Style="{StaticResource SearchEntry}" Margin="0,6,0,0"/>
+                        </StackLayout>
+                    </StackLayout>
+                </Frame>
+
+                <!-- ==================== TRADING PREFERENCES ==================== -->
+                <Label Text="Trading Preferences" Style="{StaticResource HeadlineSmall}" Margin="0,8,0,4"/>
+
+                <Frame Style="{StaticResource Card}">
+                    <StackLayout Spacing="16">
+                        <Grid ColumnDefinitions="*,Auto" RowDefinitions="Auto,Auto,Auto" RowSpacing="12">
+                            <Label Grid.Row="0" Grid.Column="0" Text="Default Leverage" Style="{StaticResource BodyLarge}" VerticalOptions="Center"/>
+                            <Entry Grid.Row="0" Grid.Column="1" Text="{Binding AppSettings.DefaultLeverage}"
+                                   Keyboard="Numeric" WidthRequest="100" HorizontalTextAlignment="End"
+                                   Style="{StaticResource SearchEntry}"/>
+
+                            <Label Grid.Row="1" Grid.Column="0" Text="Risk Per Trade (%)" Style="{StaticResource BodyLarge}" VerticalOptions="Center"/>
+                            <Entry Grid.Row="1" Grid.Column="1" Text="{Binding AppSettings.RiskPerTrade}"
+                                   Keyboard="Numeric" WidthRequest="100" HorizontalTextAlignment="End"
+                                   Style="{StaticResource SearchEntry}"/>
+
+                            <Label Grid.Row="2" Grid.Column="0" Text="Default Lot Size" Style="{StaticResource BodyLarge}" VerticalOptions="Center"/>
+                            <Entry Grid.Row="2" Grid.Column="1" Text="{Binding AppSettings.DefaultLotSize}"
+                                   Keyboard="Numeric" WidthRequest="100" HorizontalTextAlignment="End"
+                                   Style="{StaticResource SearchEntry}"/>
+                        </Grid>
+                    </StackLayout>
+                </Frame>
+
+                <!-- ==================== NOTIFICATIONS ==================== -->
+                <Label Text="Notifications" Style="{StaticResource HeadlineSmall}" Margin="0,8,0,4"/>
+
+                <Frame Style="{StaticResource Card}">
+                    <StackLayout Spacing="12">
+                        <Grid ColumnDefinitions="*,Auto">
+                            <Label Grid.Column="0" Text="New Signals" Style="{StaticResource BodyLarge}" VerticalOptions="Center"/>
+                            <Switch Grid.Column="1" IsToggled="{Binding AppSettings.NotifyNewSignals}"/>
+                        </Grid>
+                        <Grid ColumnDefinitions="*,Auto">
+                            <Label Grid.Column="0" Text="Bot Trade Updates" Style="{StaticResource BodyLarge}" VerticalOptions="Center"/>
+                            <Switch Grid.Column="1" IsToggled="{Binding AppSettings.NotifyBotTrades}"/>
+                        </Grid>
+                        <Grid ColumnDefinitions="*,Auto">
+                            <Label Grid.Column="0" Text="Price Alerts" Style="{StaticResource BodyLarge}" VerticalOptions="Center"/>
+                            <Switch Grid.Column="1" IsToggled="{Binding AppSettings.NotifyPriceAlerts}"/>
+                        </Grid>
+                        <Grid ColumnDefinitions="*,Auto">
+                            <Label Grid.Column="0" Text="AI Chat Mentions" Style="{StaticResource BodyLarge}" VerticalOptions="Center"/>
+                            <Switch Grid.Column="1" IsToggled="{Binding AppSettings.NotifyAiChat}"/>
+                        </Grid>
+                    </StackLayout>
+                </Frame>
+
+                <!-- ==================== APPEARANCE ==================== -->
+                <Label Text="Appearance" Style="{StaticResource HeadlineSmall}" Margin="0,8,0,4"/>
+
+                <Frame Style="{StaticResource Card}">
+                    <StackLayout Spacing="16">
+                        <Grid ColumnDefinitions="*,Auto">
+                            <Label Grid.Column="0" Text="Theme" Style="{StaticResource BodyLarge}" VerticalOptions="Center"/>
+                            <Picker Grid.Column="1" ItemsSource="{Binding Themes}"
+                                    SelectedItem="{Binding AppSettings.Theme}"
+                                    MinimumWidthRequest="120"/>
+                        </Grid>
+                        <Grid ColumnDefinitions="*,Auto">
+                            <Label Grid.Column="0" Text="Chart Style" Style="{StaticResource BodyLarge}" VerticalOptions="Center"/>
+                            <Picker Grid.Column="1" ItemsSource="{Binding ChartStyles}"
+                                    SelectedItem="{Binding AppSettings.ChartStyle}"
+                                    MinimumWidthRequest="120"/>
+                        </Grid>
+                        <Grid ColumnDefinitions="*,Auto">
+                            <Label Grid.Column="0" Text="Language" Style="{StaticResource BodyLarge}" VerticalOptions="Center"/>
+                            <Picker Grid.Column="1" ItemsSource="{Binding Languages}"
+                                    SelectedItem="{Binding AppSettings.Language}"
+                                    MinimumWidthRequest="120"/>
+                        </Grid>
+                    </StackLayout>
+                </Frame>
+
+                <!-- ==================== DATA & PRIVACY ==================== -->
+                <Label Text="Data &amp; Privacy" Style="{StaticResource HeadlineSmall}" Margin="0,8,0,4"/>
+
+                <Frame Style="{StaticResource Card}">
+                    <StackLayout Spacing="12">
+                        <Button Text="Clear Chat History" Style="{StaticResource SecondaryButton}" HorizontalOptions="Start"/>
+                        <Button Text="Export All Data" Style="{StaticResource SecondaryButton}" HorizontalOptions="Start"/>
+                        <Button Text="Clear All App Data" Style="{StaticResource DangerButton}" HorizontalOptions="Start"
+                                Command="{Binding ClearDataCommand}"/>
+                    </StackLayout>
+                </Frame>
+
+                <!-- ==================== ABOUT ==================== -->
+                <Label Text="About" Style="{StaticResource HeadlineSmall}" Margin="0,8,0,4"/>
+
+                <Frame Style="{StaticResource Card}">
+                    <StackLayout Spacing="8">
+                        <Grid ColumnDefinitions="*,Auto">
+                            <Label Grid.Column="0" Text="App Version" Style="{StaticResource BodyLarge}"/>
+                            <Label Grid.Column="1" Text="1.0.0" Style="{StaticResource BodyMedium}"/>
+                        </Grid>
+                        <Grid ColumnDefinitions="*,Auto">
+                            <Label Grid.Column="0" Text="AI Agents" Style="{StaticResource BodyLarge}"/>
+                            <Label Grid.Column="1" Text="500" TextColor="{StaticResource Primary}" FontAttributes="Bold"/>
+                        </Grid>
+                        <Grid ColumnDefinitions="*,Auto">
+                            <Label Grid.Column="0" Text="Indicators" Style="{StaticResource BodyLarge}"/>
+                            <Label Grid.Column="1" Text="1,145" TextColor="{StaticResource Primary}" FontAttributes="Bold"/>
+                        </Grid>
+                        <Grid ColumnDefinitions="*,Auto">
+                            <Label Grid.Column="0" Text="Backend Tools" Style="{StaticResource BodyLarge}"/>
+                            <Label Grid.Column="1" Text="12 modules" TextColor="{StaticResource Accent}" FontAttributes="Bold"/>
+                        </Grid>
+                        <BoxView Style="{StaticResource Separator}"/>
+                        <Button Text="Terms &amp; Conditions" Style="{StaticResource SecondaryButton}" HorizontalOptions="Start"/>
+                        <Button Text="Privacy Policy" Style="{StaticResource SecondaryButton}" HorizontalOptions="Start"/>
+                        <Button Text="Support" Style="{StaticResource SecondaryButton}" HorizontalOptions="Start"/>
+                    </StackLayout>
+                </Frame>
+
+                <Label Margin="0,0,0,32"/>
+            </StackLayout>
+        </ScrollView>
+
+        <!-- Save Button -->
+        <Frame Grid.Row="2" BackgroundColor="{StaticResource BackgroundSurface}"
+               BorderColor="{StaticResource BorderColor}" CornerRadius="0" Padding="16,12" HasShadow="False">
+            <Button Text="Save Settings" Style="{StaticResource PrimaryButton}"
+                    Command="{Binding SaveCommand}"
+                    HorizontalOptions="FillAndExpand"/>
+        </Frame>
+    </Grid>
+</ContentPage>

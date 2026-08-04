@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:TraderUI.ViewModels"
+             xmlns:models="clr-namespace:TraderUI.Models"
+             x:Class="TraderUI.Views.ChartPage"
+             x:DataType="vm:ChartViewModel"
+             Title="Chart">
+
+    <Grid RowDefinitions="Auto,*,Auto">
+
+        <!-- Top Controls -->
+        <Grid Grid.Row="0" BackgroundColor="{StaticResource BackgroundSurface}"
+              Padding="12,10" ColumnDefinitions="Auto,*,Auto">
+
+            <!-- Symbol Picker -->
+            <Frame Grid.Column="0" Style="{StaticResource ChipFrame}" Margin="0,0,8,0">
+                <Picker ItemsSource="{Binding Symbols}"
+                        SelectedItem="{Binding SelectedSymbol}"
+                        TextColor="{StaticResource Primary}"
+                        BackgroundColor="Transparent"
+                        FontSize="15"
+                        FontAttributes="Bold"
+                        MinimumWidthRequest="100"/>
+            </Frame>
+
+            <!-- Timeframe Selector -->
+            <ScrollView Grid.Column="1" Orientation="Horizontal" HorizontalScrollBarVisibility="Never">
+                <FlexLayout BindableLayout.ItemsSource="{Binding Timeframes}" Direction="Row">
+                    <BindableLayout.ItemTemplate>
+                        <DataTemplate x:DataType="models:Timeframe">
+                            <Frame Style="{StaticResource ChipFrame}" Margin="2,0">
+                                <Label Text="{Binding Label}" FontSize="13" TextColor="{StaticResource TextSecondary}"/>
+                            </Frame>
+                        </DataTemplate>
+                    </BindableLayout.ItemTemplate>
+                </FlexLayout>
+            </ScrollView>
+
+            <!-- Analyze Button -->
+            <Button Grid.Column="2" Text="AI" Style="{StaticResource SecondaryButton}"
+                    Command="{Binding AnalyzeCommand}"
+                    FontSize="13" Padding="12,8"/>
+        </Grid>
+
+        <!-- Chart Area -->
+        <Grid Grid.Row="1" BackgroundColor="{StaticResource ChartBackground}">
+            <!-- Candlestick Chart rendered via WebView with TradingView Lightweight Charts -->
+            <WebView x:Name="ChartWebView"
+                     BackgroundColor="{StaticResource ChartBackground}"
+                     VerticalOptions="FillAndExpand"/>
+
+            <!-- Loading overlay -->
+            <StackLayout IsVisible="{Binding IsBusy}"
+                         HorizontalOptions="Center" VerticalOptions="Center">
+                <ActivityIndicator IsRunning="{Binding IsBusy}" Color="{StaticResource Primary}"
+                                   HeightRequest="40" WidthRequest="40"/>
+                <Label Text="Loading chart..." TextColor="{StaticResource TextSecondary}" Margin="0,8,0,0"/>
+            </StackLayout>
+        </Grid>
+
+        <!-- Bottom Panel: Indicators + Analysis -->
+        <ScrollView Grid.Row="2" MaximumHeightRequest="220"
+                    BackgroundColor="{StaticResource BackgroundSurface}">
+            <StackLayout Padding="12">
+                <!-- AI Analysis Summary -->
+                <Frame IsVisible="{Binding Analysis, Converter={StaticResource NotNullConverter}}"
+                       Style="{StaticResource Card}" Margin="0,0,0,8">
+                    <StackLayout>
+                        <Grid ColumnDefinitions="*,Auto,Auto,Auto">
+                            <Label Grid.Column="0" Text="AI Swarm Analysis" Style="{StaticResource TitleMedium}"/>
+                            <Label Grid.Column="1" Text="{Binding Analysis.OverallBias}"
+                                   TextColor="{StaticResource Primary}" FontAttributes="Bold" FontSize="14"
+                                   VerticalOptions="Center" Margin="0,0,8,0"/>
+                            <Label Grid.Column="2" Text="{Binding Analysis.BullishScore, StringFormat='↑{0:F0}%'}"
+                                   TextColor="{StaticResource Success}" FontSize="13" VerticalOptions="Center" Margin="0,0,8,0"/>
+                            <Label Grid.Column="3" Text="{Binding Analysis.BearishScore, StringFormat='↓{0:F0}%'}"
+                                   TextColor="{StaticResource Danger}" FontSize="13" VerticalOptions="Center"/>
+                        </Grid>
+                        <Label Text="{Binding Analysis.Summary}" Style="{StaticResource BodyMedium}" Margin="0,6,0,0"/>
+                    </StackLayout>
+                </Frame>
+
+                <!-- Indicators Grid -->
+                <Label Text="Indicators" Style="{StaticResource TitleMedium}" Margin="0,0,0,8"/>
+                <CollectionView ItemsSource="{Binding ActiveIndicators}">
+                    <CollectionView.ItemsLayout>
+                        <GridItemsLayout Orientation="Vertical" Span="2" HorizontalItemSpacing="8" VerticalItemSpacing="4"/>
+                    </CollectionView.ItemsLayout>
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="models:IndicatorResult">
+                            <Frame BackgroundColor="{StaticResource BackgroundInput}"
+                                   BorderColor="{StaticResource BorderColor}"
+                                   CornerRadius="8" Padding="10,6" HasShadow="False">
+                                <Grid ColumnDefinitions="*,Auto">
+                                    <Label Grid.Column="0" Text="{Binding Name}" FontSize="12"
+                                           TextColor="{StaticResource TextSecondary}"/>
+                                    <StackLayout Grid.Column="1" HorizontalOptions="End">
+                                        <Label Text="{Binding Value, StringFormat='{0:F4}'}"
+                                               FontSize="12" FontAttributes="Bold"
+                                               TextColor="{StaticResource TextPrimary}" HorizontalOptions="End"/>
+                                        <Label Text="{Binding Signal}" FontSize="10"
+                                               TextColor="{StaticResource Primary}" HorizontalOptions="End"/>
+                                    </StackLayout>
+                                </Grid>
+                            </Frame>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </StackLayout>
+        </ScrollView>
+    </Grid>
+</ContentPage>

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:TraderUI.ViewModels"
+             x:Class="TraderUI.Views.BotTradeDetailPage"
+             x:DataType="vm:BotTradeDetailViewModel"
+             Title="Trade Detail">
+
+    <ScrollView>
+        <StackLayout Padding="16" Spacing="12" IsVisible="{Binding Trade, Converter={StaticResource NotNullConverter}}">
+            <!-- P&L Banner -->
+            <Frame BackgroundColor="{Binding Trade.IsPositive, Converter={StaticResource BotStatusColorConverter}}"
+                   CornerRadius="16" Padding="20,16" HasShadow="False"
+                   BorderColor="{Binding Trade.IsPositive, Converter={StaticResource BoolToColorConverter}}">
+                <Grid ColumnDefinitions="*,Auto">
+                    <StackLayout Grid.Column="0">
+                        <Label Text="{Binding Trade.Symbol}" FontSize="22" FontAttributes="Bold" TextColor="{StaticResource TextPrimary}"/>
+                        <Label Text="{Binding Trade.TypeLabel}" FontSize="16" FontAttributes="Bold"
+                               TextColor="{Binding Trade.Type, Converter={StaticResource TradeTypeColorConverter}}"/>
+                        <Label Text="{Binding Trade.BotName}" Style="{StaticResource BodySmall}"/>
+                    </StackLayout>
+                    <StackLayout Grid.Column="1" HorizontalOptions="End">
+                        <Label Text="{Binding Trade.UnrealizedPnl, StringFormat='${0:F2}'}"
+                               FontSize="28" FontAttributes="Bold"
+                               TextColor="{Binding Trade.IsPositive, Converter={StaticResource BoolToColorConverter}}"
+                               HorizontalOptions="End"/>
+                        <Label Text="{Binding Trade.PnlPercent, StringFormat='{0:F2}%'}"
+                               FontSize="14" TextColor="{StaticResource TextSecondary}" HorizontalOptions="End"/>
+                    </StackLayout>
+                </Grid>
+            </Frame>
+
+            <!-- Trade Details -->
+            <Frame Style="{StaticResource Card}">
+                <StackLayout Spacing="12">
+                    <Label Text="Trade Details" Style="{StaticResource TitleMedium}"/>
+                    <Grid ColumnDefinitions="*,*" RowDefinitions="Auto,Auto,Auto" RowSpacing="10">
+                        <StackLayout Grid.Column="0" Grid.Row="0">
+                            <Label Text="ENTRY PRICE" Style="{StaticResource BodySmall}"/>
+                            <Label Text="{Binding Trade.EntryPrice, StringFormat='{0:F5}'}" FontSize="14" TextColor="{StaticResource TextPrimary}" FontAttributes="Bold"/>
+                        </StackLayout>
+                        <StackLayout Grid.Column="1" Grid.Row="0">
+                            <Label Text="CURRENT PRICE" Style="{StaticResource BodySmall}"/>
+                            <Label Text="{Binding Trade.CurrentPrice, StringFormat='{0:F5}'}" FontSize="14" TextColor="{StaticResource Primary}" FontAttributes="Bold"/>
+                        </StackLayout>
+                        <StackLayout Grid.Column="0" Grid.Row="1">
+                            <Label Text="STOP LOSS" Style="{StaticResource BodySmall}"/>
+                            <Label Text="{Binding Trade.StopLoss, StringFormat='{0:F5}'}" FontSize="14" TextColor="{StaticResource Danger}" FontAttributes="Bold"/>
+                        </StackLayout>
+                        <StackLayout Grid.Column="1" Grid.Row="1">
+                            <Label Text="TAKE PROFIT" Style="{StaticResource BodySmall}"/>
+                            <Label Text="{Binding Trade.TakeProfit, StringFormat='{0:F5}'}" FontSize="14" TextColor="{StaticResource Success}" FontAttributes="Bold"/>
+                        </StackLayout>
+                        <StackLayout Grid.Column="0" Grid.Row="2">
+                            <Label Text="LOT SIZE" Style="{StaticResource BodySmall}"/>
+                            <Label Text="{Binding Trade.LotSize, StringFormat='{0:F2}'}" FontSize="14" TextColor="{StaticResource TextPrimary}"/>
+                        </StackLayout>
+                        <StackLayout Grid.Column="1" Grid.Row="2">
+                            <Label Text="DURATION" Style="{StaticResource BodySmall}"/>
+                            <Label Text="{Binding Trade.Duration}" FontSize="14" TextColor="{StaticResource TextPrimary}"/>
+                        </StackLayout>
+                    </Grid>
+                </StackLayout>
+            </Frame>
+        </StackLayout>
+    </ScrollView>
+</ContentPage>

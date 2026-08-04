@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ResourceDictionary xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+
+    <!-- Primary Brand Colors -->
+    <Color x:Key="Primary">#00D4FF</Color>
+    <Color x:Key="PrimaryDark">#0099BB</Color>
+    <Color x:Key="PrimaryLight">#33DDFF</Color>
+    <Color x:Key="Accent">#00FF88</Color>
+    <Color x:Key="AccentDark">#00CC6A</Color>
+
+    <!-- Background Colors -->
+    <Color x:Key="BackgroundDark">#0A0E1A</Color>
+    <Color x:Key="BackgroundCard">#111827</Color>
+    <Color x:Key="BackgroundElevated">#1A2235</Color>
+    <Color x:Key="BackgroundInput">#1E2A3A</Color>
+    <Color x:Key="BackgroundSurface">#0F1624</Color>
+
+    <!-- Text Colors -->
+    <Color x:Key="TextPrimary">#FFFFFF</Color>
+    <Color x:Key="TextSecondary">#A0AEC0</Color>
+    <Color x:Key="TextMuted">#4A5568</Color>
+    <Color x:Key="TextAccent">#00D4FF</Color>
+
+    <!-- Status Colors -->
+    <Color x:Key="Success">#00E676</Color>
+    <Color x:Key="SuccessLight">#1AFF8A</Color>
+    <Color x:Key="Danger">#FF3D57</Color>
+    <Color x:Key="DangerLight">#FF6B7A</Color>
+    <Color x:Key="Warning">#FFB300</Color>
+    <Color x:Key="WarningLight">#FFC933</Color>
+    <Color x:Key="Info">#00D4FF</Color>
+
+    <!-- Border Colors -->
+    <Color x:Key="BorderColor">#1E2A3A</Color>
+    <Color x:Key="BorderColorLight">#2D3A4F</Color>
+    <Color x:Key="DividerColor">#1A2235</Color>
+
+    <!-- Chart Colors -->
+    <Color x:Key="CandleUp">#00E676</Color>
+    <Color x:Key="CandleDown">#FF3D57</Color>
+    <Color x:Key="ChartGrid">#1A2235</Color>
+    <Color x:Key="ChartBackground">#0A0E1A</Color>
+
+    <!-- Tab Bar -->
+    <Color x:Key="TabBarBackground">#0F1624</Color>
+    <Color x:Key="TabBarSelected">#00D4FF</Color>
+    <Color x:Key="TabBarUnselected">#4A5568</Color>
+
+    <!-- Light Theme (fallback) -->
+    <Color x:Key="BackgroundLight">#F0F4F8</Color>
+    <Color x:Key="CardLight">#FFFFFF</Color>
+    <Color x:Key="TextLight">#1A202C</Color>
+
+</ResourceDictionary>

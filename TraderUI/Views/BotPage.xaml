@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:TraderUI.ViewModels"
+             xmlns:models="clr-namespace:TraderUI.Models"
+             x:Class="TraderUI.Views.BotPage"
+             x:DataType="vm:BotViewModel"
+             Title="Bot">
+
+    <Grid RowDefinitions="Auto,Auto,Auto,*">
+
+        <!-- Top Bar -->
+        <Grid Grid.Row="0" BackgroundColor="{StaticResource BackgroundSurface}"
+              Padding="16,12" ColumnDefinitions="*,Auto,Auto">
+            <Label Grid.Column="0" Text="Bot" Style="{StaticResource HeadlineSmall}" VerticalOptions="Center"/>
+
+            <!-- Bot Selector -->
+            <Frame Grid.Column="1" Style="{StaticResource ChipFrame}" Margin="0,0,8,0">
+                <Picker ItemsSource="{Binding BotNames}"
+                        SelectedItem="{Binding SelectedBot}"
+                        TextColor="{StaticResource TextSecondary}"
+                        BackgroundColor="Transparent"
+                        FontSize="13"
+                        MinimumWidthRequest="120"/>
+            </Frame>
+
+            <!-- Bot Toggle -->
+            <Frame Grid.Column="2" CornerRadius="20" Padding="12,6" HasShadow="False"
+                   BackgroundColor="{Binding IsBotRunning, Converter={StaticResource BotStatusColorConverter}}">
+                <Grid ColumnDefinitions="Auto,Auto" ColumnSpacing="6">
+                    <Ellipse Grid.Column="0" WidthRequest="8" HeightRequest="8"
+                             Fill="{Binding IsBotRunning, Converter={StaticResource BotDotColorConverter}}"
+                             VerticalOptions="Center"/>
+                    <Label Grid.Column="1"
+                           Text="{Binding IsBotRunning, Converter={StaticResource BotStatusTextConverter}}"
+                           FontSize="13" FontAttributes="Bold"
+                           TextColor="{StaticResource TextPrimary}"
+                           VerticalOptions="Center"/>
+                </Grid>
+            </Frame>
+        </Grid>
+
+        <!-- Stats Summary Strip -->
+        <Frame Grid.Row="1" BackgroundColor="{StaticResource BackgroundCard}"
+               BorderColor="{StaticResource BorderColor}" CornerRadius="0" Padding="16,12" HasShadow="False">
+            <Grid ColumnDefinitions="*,*,*,*,*">
+                <StackLayout Grid.Column="0">
+                    <Label Text="EQUITY" Style="{StaticResource BodySmall}"/>
+                    <Label Text="{Binding Stats.Equity, StringFormat='${0:F0}'}"
+                           FontSize="15" FontAttributes="Bold" TextColor="{StaticResource TextPrimary}"/>
+                </StackLayout>
+                <StackLayout Grid.Column="1">
+                    <Label Text="DAILY P/L" Style="{StaticResource BodySmall}"/>
+                    <Label Text="{Binding Stats.DailyPnl, StringFormat='${0:F2}'}"
+                           FontSize="15" FontAttributes="Bold"
+                           TextColor="{Binding Stats.DailyPnl, Converter={StaticResource PnlColorConverter}}"/>
+                </StackLayout>
+                <StackLayout Grid.Column="2">
+                    <Label Text="WIN RATE" Style="{StaticResource BodySmall}"/>
+                    <Label Text="{Binding Stats.WinRate, StringFormat='{0:F1}%'}"
+                           FontSize="15" FontAttributes="Bold" TextColor="{StaticResource Success}"/>
+                </StackLayout>
+                <StackLayout Grid.Column="3">
+                    <Label Text="TRADES" Style="{StaticResource BodySmall}"/>
+                    <Label Text="{Binding Stats.TotalTrades}"
+                           FontSize="15" FontAttributes="Bold" TextColor="{StaticResource TextPrimary}"/>
+                </StackLayout>
+                <StackLayout Grid.Column="4">
+                    <Label Text="OPEN" Style="{StaticResource BodySmall}"/>
+                    <Label Text="{Binding Stats.OpenTrades}"
+                           FontSize="15" FontAttributes="Bold" TextColor="{StaticResource Primary}"/>
+                </StackLayout>
+            </Grid>
+        </Frame>
+
+        <!-- Tab Selector -->
+        <Grid Grid.Row="2" ColumnDefinitions="*,*" BackgroundColor="{StaticResource BackgroundInput}"
+              Margin="12,8" CornerRadius="12" Padding="4" HeightRequest="44">
+            <Button Grid.Column="0" Text="LIVE"
+                    BackgroundColor="{StaticResource Primary}"
+                    TextColor="{StaticResource BackgroundDark}"
+                    FontAttributes="Bold" FontSize="14"
+                    CornerRadius="8"/>
+            <Button Grid.Column="1" Text="HISTORY"
+                    BackgroundColor="Transparent"
+                    TextColor="{StaticResource TextSecondary}"
+                    FontSize="14" CornerRadius="8"/>
+        </Grid>
+
+        <!-- Open Trades List -->
+        <RefreshView Grid.Row="3"
+                     Command="{Binding RefreshCommand}"
+                     IsRefreshing="{Binding IsBusy}"
+                     RefreshColor="{StaticResource Primary}">
+            <CollectionView ItemsSource="{Binding OpenTrades}" Margin="12,0">
+                <CollectionView.EmptyView>
+                    <StackLayout HorizontalOptions="Center" VerticalOptions="Center" Spacing="12" Margin="0,60,0,0">
+                        <Label Text="🤖" FontSize="48" HorizontalOptions="Center"/>
+                        <Label Text="No open positions" Style="{StaticResource HeadlineSmall}" HorizontalOptions="Center"/>
+                        <Label Text="Start the bot to begin trading" Style="{StaticResource BodyMedium}" HorizontalOptions="Center"/>
+                        <Button Text="Start Bot" Style="{StaticResource PrimaryButton}"
+                                HorizontalOptions="Center"
+                                Command="{Binding Source={RelativeSource AncestorType={x:Type vm:BotViewModel}}, Path=ToggleBotCommand}"/>
+                    </StackLayout>
+                </CollectionView.EmptyView>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="models:BotTrade">
+                        <Frame Style="{StaticResource Card}" Margin="0,4">
+                            <StackLayout Spacing="10">
+                                <!-- Header -->
+                                <Grid ColumnDefinitions="Auto,*,Auto">
+                                    <Frame Grid.Column="0" Padding="8,4" CornerRadius="8" HasShadow="False"
+                                           BackgroundColor="{Binding Type, Converter={StaticResource TradeTypeColorConverter}}">
+                                        <Label Text="{Binding TypeLabel}"
+                                               TextColor="{StaticResource BackgroundDark}"
+                                               FontAttributes="Bold" FontSize="13"/>
+                                    </Frame>
+                                    <StackLayout Grid.Column="1" Margin="10,0">
+                                        <Label Text="{Binding Symbol}" Style="{StaticResource TitleMedium}"/>
+                                        <Label Text="{Binding BotName}" Style="{StaticResource BodySmall}"/>
+                                    </StackLayout>
+                                    <StackLayout Grid.Column="2" HorizontalOptions="End">
+                                        <Label Text="{Binding UnrealizedPnl, StringFormat='${0:F2}'}"
+                                               FontSize="16" FontAttributes="Bold"
+                                               TextColor="{Binding IsPositive, Converter={StaticResource BoolToColorConverter}}"
+                                               HorizontalOptions="End"/>
+                                        <Label Text="{Binding PnlPercent, StringFormat='{0:F2}%'}"
+                                               FontSize="12" TextColor="{StaticResource TextSecondary}"
+                                               HorizontalOptions="End"/>
+                                    </StackLayout>
+                                </Grid>
+
+                                <!-- Trade Details -->
+                                <Grid ColumnDefinitions="*,*,*,*">
+                                    <StackLayout Grid.Column="0">
+                                        <Label Text="ENTRY" Style="{StaticResource BodySmall}"/>
+                                        <Label Text="{Binding EntryPrice, StringFormat='{0:F5}'}" FontSize="12" TextColor="{StaticResource TextPrimary}"/>
+                                    </StackLayout>
+                                    <StackLayout Grid.Column="1">
+                                        <Label Text="CURRENT" Style="{StaticResource BodySmall}"/>
+                                        <Label Text="{Binding CurrentPrice, StringFormat='{0:F5}'}" FontSize="12" TextColor="{StaticResource Primary}"/>
+                                    </StackLayout>
+                                    <StackLayout Grid.Column="2">
+                                        <Label Text="SL" Style="{StaticResource BodySmall}"/>
+                                        <Label Text="{Binding StopLoss, StringFormat='{0:F5}'}" FontSize="12" TextColor="{StaticResource Danger}"/>
+                                    </StackLayout>
+                                    <StackLayout Grid.Column="3">
+                                        <Label Text="TP" Style="{StaticResource BodySmall}"/>
+                                        <Label Text="{Binding TakeProfit, StringFormat='{0:F5}'}" FontSize="12" TextColor="{StaticResource Success}"/>
+                                    </StackLayout>
+                                </Grid>
+
+                                <!-- Duration + Actions -->
+                                <Grid ColumnDefinitions="*,Auto,Auto,Auto">
+                                    <Label Grid.Column="0" Text="{Binding Duration, StringFormat='Open: {0}'}"
+                                           Style="{StaticResource BodySmall}" VerticalOptions="Center"/>
+                                    <Button Grid.Column="1" Text="Chart" Style="{StaticResource SecondaryButton}"
+                                            FontSize="12" HeightRequest="34" Padding="10,0"/>
+                                    <Button Grid.Column="2" Text="Edit" Style="{StaticResource SecondaryButton}"
+                                            FontSize="12" HeightRequest="34" Padding="10,0" Margin="6,0"/>
+                                    <Button Grid.Column="3" Text="Close" Style="{StaticResource DangerButton}"
+                                            FontSize="12" HeightRequest="34" Padding="10,0"
+                                            Command="{Binding Source={RelativeSource AncestorType={x:Type vm:BotViewModel}}, Path=CloseTradeCommand}"
+                                            CommandParameter="{Binding Id}"/>
+                                </Grid>
+                            </StackLayout>
+                        </Frame>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </RefreshView>
+    </Grid>
+</ContentPage>

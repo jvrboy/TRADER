@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Application xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:converters="clr-namespace:TraderUI.Converters"
+             x:Class="TraderUI.App">
+
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Resources/Styles/Colors.xaml" />
+                <ResourceDictionary Source="Resources/Styles/Styles.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+
+            <!-- ==================== VALUE CONVERTERS ==================== -->
+            <converters:InvertBoolConverter x:Key="InvertBoolConverter" />
+            <converters:BoolToColorConverter x:Key="BoolToColorConverter" />
+            <converters:BoolToStarConverter x:Key="BoolToStarConverter" />
+            <converters:NotNullConverter x:Key="NotNullConverter" />
+            <converters:NullToFalseConverter x:Key="NullToFalseConverter" />
+            <converters:DirectionToColorConverter x:Key="DirectionToColorConverter" />
+            <converters:TradeTypeColorConverter x:Key="TradeTypeColorConverter" />
+            <converters:BotStatusColorConverter x:Key="BotStatusColorConverter" />
+            <converters:BotDotColorConverter x:Key="BotDotColorConverter" />
+            <converters:BotStatusTextConverter x:Key="BotStatusTextConverter" />
+            <converters:PnlColorConverter x:Key="PnlColorConverter" />
+            <converters:ConfidenceToColorConverter x:Key="ConfidenceToColorConverter" />
+            <converters:SignalStatusColorConverter x:Key="SignalStatusColorConverter" />
+            <converters:DoubleToPercentConverter x:Key="DoubleToPercentConverter" />
+            <converters:DecimalToStringConverter x:Key="DecimalToStringConverter" />
+            <converters:EmptyCollectionToBoolConverter x:Key="EmptyCollectionToBoolConverter" />
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>

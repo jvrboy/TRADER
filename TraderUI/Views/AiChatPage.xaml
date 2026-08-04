@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:TraderUI.ViewModels"
+             xmlns:models="clr-namespace:TraderUI.Models"
+             x:Class="TraderUI.Views.AiChatPage"
+             x:DataType="vm:AiChatViewModel"
+             Title="AI Chat">
+
+    <Grid RowDefinitions="Auto,*,Auto">
+
+        <!-- Top Bar -->
+        <Grid Grid.Row="0" BackgroundColor="{StaticResource BackgroundSurface}"
+              Padding="16,12" ColumnDefinitions="*,Auto,Auto">
+            <Label Grid.Column="0" Text="AI Chat" Style="{StaticResource HeadlineSmall}" VerticalOptions="Center"/>
+
+            <!-- Provider Picker -->
+            <Frame Grid.Column="1" Style="{StaticResource ChipFrame}" Margin="0,0,8,0">
+                <Picker ItemsSource="{Binding Providers}"
+                        SelectedItem="{Binding SelectedProvider}"
+                        TextColor="{StaticResource TextAccent}"
+                        BackgroundColor="Transparent"
+                        FontSize="13"
+                        MinimumWidthRequest="100"/>
+            </Frame>
+
+            <!-- Model Picker -->
+            <Frame Grid.Column="2" Style="{StaticResource ChipFrame}">
+                <Picker ItemsSource="{Binding Models}"
+                        SelectedItem="{Binding SelectedModel}"
+                        TextColor="{StaticResource TextSecondary}"
+                        BackgroundColor="Transparent"
+                        FontSize="12"
+                        MinimumWidthRequest="120"/>
+            </Frame>
+        </Grid>
+
+        <!-- Messages List -->
+        <CollectionView Grid.Row="1"
+                        ItemsSource="{Binding Messages}"
+                        Margin="0"
+                        x:Name="MessagesCollection">
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="models:ChatMessage">
+                    <Grid Padding="16,6">
+                        <!-- User Message -->
+                        <Frame IsVisible="{Binding IsUser}"
+                               BackgroundColor="{StaticResource Primary}"
+                               CornerRadius="18"
+                               Padding="14,10"
+                               HorizontalOptions="End"
+                               MaximumWidthRequest="300">
+                            <StackLayout>
+                                <Label Text="{Binding Content}"
+                                       TextColor="{StaticResource BackgroundDark}"
+                                       FontSize="15"
+                                       LineBreakMode="WordWrap"/>
+                                <Label Text="{Binding TimeDisplay}"
+                                       TextColor="{StaticResource BackgroundElevated}"
+                                       FontSize="11"
+                                       HorizontalOptions="End"/>
+                            </StackLayout>
+                        </Frame>
+
+                        <!-- AI Message -->
+                        <StackLayout IsVisible="{Binding IsAssistant}" HorizontalOptions="Start" MaximumWidthRequest="320">
+                            <Frame BackgroundColor="{StaticResource BackgroundCard}"
+                                   BorderColor="{StaticResource BorderColor}"
+                                   CornerRadius="18"
+                                   Padding="14,10">
+                                <StackLayout>
+                                    <!-- Loading indicator -->
+                                    <ActivityIndicator IsVisible="{Binding IsLoading}"
+                                                       IsRunning="{Binding IsLoading}"
+                                                       Color="{StaticResource Primary}"
+                                                       HeightRequest="24" WidthRequest="24"/>
+                                    <Label Text="{Binding Content}"
+                                           IsVisible="{Binding IsLoading, Converter={StaticResource InvertBoolConverter}}"
+                                           TextColor="{StaticResource TextPrimary}"
+                                           FontSize="15"
+                                           LineBreakMode="WordWrap"/>
+                                    <Label Text="{Binding TimeDisplay}"
+                                           TextColor="{StaticResource TextMuted}"
+                                           FontSize="11"
+                                           HorizontalOptions="End"/>
+                                </StackLayout>
+                            </Frame>
+                            <!-- Quick Action Chips -->
+                            <FlexLayout BindableLayout.ItemsSource="{Binding QuickActions}"
+                                        Wrap="Wrap"
+                                        Margin="4,4,0,0">
+                                <BindableLayout.ItemTemplate>
+                                    <DataTemplate x:DataType="x:String">
+                                        <Frame Style="{StaticResource ChipFrame}" Margin="0,2,4,2">
+                                            <Label Text="{Binding .}"
+                                                   TextColor="{StaticResource Primary}"
+                                                   FontSize="12"/>
+                                        </Frame>
+                                    </DataTemplate>
+                                </BindableLayout.ItemTemplate>
+                            </FlexLayout>
+                        </StackLayout>
+                    </Grid>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+        <!-- Typing Indicator -->
+        <StackLayout Grid.Row="1" IsVisible="{Binding IsTyping}"
+                     Orientation="Horizontal" Padding="20,4"
+                     VerticalOptions="End">
+            <ActivityIndicator IsRunning="True" Color="{StaticResource Primary}" HeightRequest="16" WidthRequest="16"/>
+            <Label Text="AI is thinking..." TextColor="{StaticResource TextMuted}" FontSize="13" Margin="8,0,0,0"/>
+        </StackLayout>
+
+        <!-- Input Bar -->
+        <Frame Grid.Row="2"
+               BackgroundColor="{StaticResource BackgroundSurface}"
+               BorderColor="{StaticResource BorderColor}"
+               CornerRadius="0"
+               Padding="12,10">
+            <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
+                <Frame Grid.Column="0"
+                       BackgroundColor="{StaticResource BackgroundInput}"
+                       BorderColor="{StaticResource BorderColor}"
+                       CornerRadius="24"
+                       Padding="16,0">
+                    <Entry Style="{StaticResource ChatEntry}"
+                           Text="{Binding InputText}"
+                           Placeholder="Ask anything about markets..."
+                           ReturnCommand="{Binding SendCommand}"
+                           HeightRequest="44"/>
+                </Frame>
+                <Button Grid.Column="1"
+                        Text="➤"
+                        Style="{StaticResource PrimaryButton}"
+                        Command="{Binding SendCommand}"
+                        WidthRequest="48"
+                        HeightRequest="48"
+                        CornerRadius="24"
+                        Padding="0"/>
+            </Grid>
+        </Frame>
+    </Grid>
+</ContentPage>

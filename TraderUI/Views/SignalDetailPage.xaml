@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:TraderUI.ViewModels"
+             x:Class="TraderUI.Views.SignalDetailPage"
+             x:DataType="vm:SignalDetailViewModel"
+             Title="Signal Detail">
+
+    <ScrollView>
+        <StackLayout Padding="16" Spacing="12" IsVisible="{Binding Signal, Converter={StaticResource NotNullConverter}}">
+            <!-- Direction Banner -->
+            <Frame BackgroundColor="{Binding Signal.Direction, Converter={StaticResource DirectionToColorConverter}}"
+                   CornerRadius="16" Padding="20,16" HasShadow="False">
+                <Grid ColumnDefinitions="*,Auto">
+                    <StackLayout Grid.Column="0">
+                        <Label Text="{Binding Signal.Symbol}" FontSize="24" FontAttributes="Bold"
+                               TextColor="{StaticResource BackgroundDark}"/>
+                        <Label Text="{Binding Signal.DirectionLabel}" FontSize="18" FontAttributes="Bold"
+                               TextColor="{StaticResource BackgroundDark}"/>
+                    </StackLayout>
+                    <StackLayout Grid.Column="1" HorizontalOptions="End">
+                        <Label Text="{Binding Signal.ConfidenceScore, StringFormat='{0:F0}%'}"
+                               FontSize="32" FontAttributes="Bold" TextColor="{StaticResource BackgroundDark}"
+                               HorizontalOptions="End"/>
+                        <Label Text="Confidence" FontSize="12" TextColor="{StaticResource BackgroundElevated}"
+                               HorizontalOptions="End"/>
+                    </StackLayout>
+                </Grid>
+            </Frame>
+
+            <!-- Trade Levels -->
+            <Frame Style="{StaticResource Card}">
+                <StackLayout Spacing="12">
+                    <Label Text="Trade Levels" Style="{StaticResource TitleMedium}"/>
+                    <Grid ColumnDefinitions="*,*" RowDefinitions="Auto,Auto,Auto,Auto" RowSpacing="10">
+                        <StackLayout Grid.Column="0" Grid.Row="0">
+                            <Label Text="ENTRY ZONE" Style="{StaticResource BodySmall}"/>
+                            <Label Text="{Binding Signal.EntryZone}" FontSize="14" TextColor="{StaticResource Primary}" FontAttributes="Bold"/>
+                        </StackLayout>
+                        <StackLayout Grid.Column="1" Grid.Row="0">
+                            <Label Text="STOP LOSS" Style="{StaticResource BodySmall}"/>
+                            <Label Text="{Binding Signal.StopLoss, StringFormat='{0:F5}'}" FontSize="14" TextColor="{StaticResource Danger}" FontAttributes="Bold"/>
+                        </StackLayout>
+                        <StackLayout Grid.Column="0" Grid.Row="1">
+                            <Label Text="TAKE PROFIT 1" Style="{StaticResource BodySmall}"/>
+                            <Label Text="{Binding Signal.TakeProfit1, StringFormat='{0:F5}'}" FontSize="14" TextColor="{StaticResource Success}" FontAttributes="Bold"/>
+                        </StackLayout>
+                        <StackLayout Grid.Column="1" Grid.Row="1">
+                            <Label Text="TAKE PROFIT 2" Style="{StaticResource BodySmall}"/>
+                            <Label Text="{Binding Signal.TakeProfit2, StringFormat='{0:F5}'}" FontSize="14" TextColor="{StaticResource Success}"/>
+                        </StackLayout>
+                        <StackLayout Grid.Column="0" Grid.Row="2">
+                            <Label Text="TAKE PROFIT 3" Style="{StaticResource BodySmall}"/>
+                            <Label Text="{Binding Signal.TakeProfit3, StringFormat='{0:F5}'}" FontSize="14" TextColor="{StaticResource Success}"/>
+                        </StackLayout>
+                        <StackLayout Grid.Column="1" Grid.Row="2">
+                            <Label Text="TIMEFRAME" Style="{StaticResource BodySmall}"/>
+                            <Label Text="{Binding Signal.Timeframe}" FontSize="14" TextColor="{StaticResource TextPrimary}"/>
+                        </StackLayout>
+                    </Grid>
+                </StackLayout>
+            </Frame>
+
+            <!-- Strategy Info -->
+            <Frame Style="{StaticResource Card}">
+                <StackLayout Spacing="8">
+                    <Label Text="Strategy" Style="{StaticResource TitleMedium}"/>
+                    <Label Text="{Binding Signal.Strategy}" Style="{StaticResource BodyLarge}"/>
+                    <Label Text="{Binding Signal.Notes}" Style="{StaticResource BodyMedium}"/>
+                    <Label Text="{Binding Signal.TimeAgo, StringFormat='Generated: {0}'}" Style="{StaticResource BodySmall}"/>
+                </StackLayout>
+            </Frame>
+        </StackLayout>
+    </ScrollView>
+</ContentPage>
