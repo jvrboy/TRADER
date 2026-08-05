@@ -1,0 +1,20 @@
+{
+  "app_id": 1089,
+  "ws_url": "wss://ws.derivws.com/websockets/v3?app_id=1089",
+  "instruments": [
+    { "name": "DSI10",   "symbol": "DSI10",     "family": "drift", "min_confluence": 5.0, "atr_tp_mult": 2.0, "atr_sl_mult": 1.0, "timeframes": [60, 300, 900] },
+    { "name": "DSI20",   "symbol": "DSI20",     "family": "drift", "min_confluence": 5.0, "atr_tp_mult": 2.0, "atr_sl_mult": 1.0, "timeframes": [60, 300, 900] },
+    { "name": "DSI30",   "symbol": "DSI30",     "family": "drift", "min_confluence": 5.0, "atr_tp_mult": 2.0, "atr_sl_mult": 1.0, "timeframes": [60, 300, 900] },
+    { "name": "XAUUSD",  "symbol": "frxXAUUSD", "family": "fx",    "min_confluence": 7.0, "atr_tp_mult": 2.5, "atr_sl_mult": 1.0, "timeframes": [300, 900, 3600, 14400] },
+    { "name": "AUDCAD",  "symbol": "frxAUDCAD", "family": "fx",    "min_confluence": 7.0, "atr_tp_mult": 2.5, "atr_sl_mult": 1.0, "timeframes": [300, 900, 3600, 14400] },
+    { "name": "USDCHF",  "symbol": "frxUSDCHF", "family": "fx",    "min_confluence": 7.0, "atr_tp_mult": 2.5, "atr_sl_mult": 1.0, "timeframes": [300, 900, 3600, 14400] },
+    { "name": "USDJPY",  "symbol": "frxUSDJPY", "family": "fx",    "min_confluence": 7.0, "atr_tp_mult": 2.5, "atr_sl_mult": 1.0, "timeframes": [300, 900, 3600, 14400] }
+  ],
+  "runtime": {
+    "expiry_rule": "TP_OR_SL_ONLY",
+    "one_per_instrument": true,
+    "regime_age_max_pct": 60,
+    "candles_lookback": 200,
+    "poll_interval_ms": 2000
+  }
+}

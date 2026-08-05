@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>DsiAgentic.Cli</RootNamespace>
+    <AssemblyName>dsi</AssemblyName>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DsiAgentic.Core\DsiAgentic.Core.csproj" />
+    <ProjectReference Include="..\DsiAgentic.Deriv\DsiAgentic.Deriv.csproj" />
+    <ProjectReference Include="..\DsiAgentic.Indicators\DsiAgentic.Indicators.csproj" />
+    <ProjectReference Include="..\DsiAgentic.Divergence\DsiAgentic.Divergence.csproj" />
+    <ProjectReference Include="..\DsiAgentic.Agents\DsiAgentic.Agents.csproj" />
+    <ProjectReference Include="..\DsiAgentic.Brains\DsiAgentic.Brains.csproj" />
+    <ProjectReference Include="..\DsiAgentic.Learning\DsiAgentic.Learning.csproj" />
+    <ProjectReference Include="..\DsiAgentic.Signals\DsiAgentic.Signals.csproj" />
+    <ProjectReference Include="..\DsiAgentic.Persistence\DsiAgentic.Persistence.csproj" />
+    <ProjectReference Include="..\DsiAgentic.Orchestrator\DsiAgentic.Orchestrator.csproj" />
+    <ProjectReference Include="..\DsiAgentic.Kernels\DsiAgentic.Kernels.csproj" />
+    <ProjectReference Include="..\DsiAgentic.Strategies\DsiAgentic.Strategies.csproj" />
+    <ProjectReference Include="..\DsiAgentic.Risk\DsiAgentic.Risk.csproj" />
+  </ItemGroup>
+</Project>

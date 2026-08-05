@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Library</OutputType>
+    <RootNamespace>DsiAgentic.Agents</RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DsiAgentic.Core\DsiAgentic.Core.csproj" />
+    <ProjectReference Include="..\DsiAgentic.Indicators\DsiAgentic.Indicators.csproj" />
+    <ProjectReference Include="..\DsiAgentic.Divergence\DsiAgentic.Divergence.csproj" />
+    <ProjectReference Include="..\DsiAgentic.Strategies\DsiAgentic.Strategies.csproj" />
+    <ProjectReference Include="..\DsiAgentic.Brains\DsiAgentic.Brains.csproj" />
+  </ItemGroup>
+</Project>

@@ -1,0 +1,10 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Library</OutputType>
+    <RootNamespace>DsiAgentic.Brains</RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DsiAgentic.Core\DsiAgentic.Core.csproj" />
+    <ProjectReference Include="..\DsiAgentic.Kernels\DsiAgentic.Kernels.csproj" />
+  </ItemGroup>
+</Project>

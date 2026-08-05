@@ -1,0 +1,9 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Library</OutputType>
+    <RootNamespace>DsiAgentic.Deriv</RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DsiAgentic.Core\DsiAgentic.Core.csproj" />
+  </ItemGroup>
+</Project>

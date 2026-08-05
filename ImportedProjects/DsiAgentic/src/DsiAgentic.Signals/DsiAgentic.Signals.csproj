@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Library</OutputType>
+    <RootNamespace>DsiAgentic.Signals</RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DsiAgentic.Core\DsiAgentic.Core.csproj" />
+    <ProjectReference Include="..\DsiAgentic.Indicators\DsiAgentic.Indicators.csproj" />
+    <ProjectReference Include="..\DsiAgentic.Agents\DsiAgentic.Agents.csproj" />
+    <ProjectReference Include="..\DsiAgentic.Brains\DsiAgentic.Brains.csproj" />
+    <ProjectReference Include="..\DsiAgentic.Learning\DsiAgentic.Learning.csproj" />
+    <ProjectReference Include="..\DsiAgentic.Risk\DsiAgentic.Risk.csproj" />
+  </ItemGroup>
+</Project>

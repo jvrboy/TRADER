@@ -1,0 +1,9 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    { "name": ".NET Launch (CLI ping)", "type": "coreclr", "request": "launch",
+      "preLaunchTask": "build",
+      "program": "${workspaceFolder}/src/DsiAgentic.Cli/bin/Debug/net8.0/dsi.dll",
+      "args": ["ping"], "cwd": "${workspaceFolder}", "console": "integratedTerminal" }
+  ]
+}

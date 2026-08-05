@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Library</OutputType>
+    <RootNamespace>DsiAgentic.Orchestrator</RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DsiAgentic.Core\DsiAgentic.Core.csproj" />
+    <ProjectReference Include="..\DsiAgentic.Deriv\DsiAgentic.Deriv.csproj" />
+    <ProjectReference Include="..\DsiAgentic.Agents\DsiAgentic.Agents.csproj" />
+    <ProjectReference Include="..\DsiAgentic.Brains\DsiAgentic.Brains.csproj" />
+    <ProjectReference Include="..\DsiAgentic.Learning\DsiAgentic.Learning.csproj" />
+    <ProjectReference Include="..\DsiAgentic.Signals\DsiAgentic.Signals.csproj" />
+    <ProjectReference Include="..\DsiAgentic.Persistence\DsiAgentic.Persistence.csproj" />
+  </ItemGroup>
+</Project>

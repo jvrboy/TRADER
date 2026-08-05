@@ -1,0 +1,8 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    { "label": "build", "type": "shell",
+      "command": "dotnet", "args": ["build", "DsiAgentic.sln", "-c", "Debug"],
+      "group": { "kind": "build", "isDefault": true } }
+  ]
+}

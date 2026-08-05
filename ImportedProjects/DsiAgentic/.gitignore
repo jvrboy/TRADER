@@ -1,0 +1,10 @@
+bin/
+obj/
+*.user
+.vs/
+data/brains/*.json
+data/knowledge/*.jsonl
+data/open_signals.json
+data/signals.jsonl
+data/performance.json
+data/meta_learner.json
