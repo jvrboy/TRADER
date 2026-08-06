@@ -1,0 +1,26 @@
+{
+  "provider": "ccxt",
+  "exchange": "binance",
+  "symbols": ["BTC/USDT", "ETH/USDT", "SOL/USDT"],
+  "base_interval": "5m",
+  "ccxt_limit": 1500,
+  "timeframes": ["5m", "15m", "1h", "4h"],
+  "indicators": ["rsi", "macd", "macd_hist", "stochastic", "cci", "mfi", "obv"],
+  "indicator_params": {
+    "rsi": { "period": 14 },
+    "macd": { "fast": 12, "slow": 26, "signal": 9 },
+    "stochastic": { "k_period": 14, "d_period": 3, "smooth_k": 3 },
+    "cci": { "period": 20 },
+    "mfi": { "period": 14 }
+  },
+  "pivot_left": 5,
+  "pivot_right": 5,
+  "include_hidden": true,
+  "min_score": 45.0,
+  "max_signal_age_bars": 12,
+  "poll_seconds": 60.0,
+  "target_atr_multiple": 2.0,
+  "expiry_bars": 40,
+  "jsonl_log": "divergence_events.jsonl",
+  "webhook_url": ""
+}

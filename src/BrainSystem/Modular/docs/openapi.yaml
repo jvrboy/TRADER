@@ -1,0 +1,90 @@
+openapi: 3.0.1
+info:
+  title: BrainSystem API
+  version: "1.0"
+  description: Intelligent agent API with 1000+ neural network ensemble, LLM integration, and drift switch index prediction.
+paths:
+  /api/train:
+    post:
+      summary: Trigger training on drift indices
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                driftIndices:
+                  type: array
+                  items:
+                    type: integer
+                epochs:
+                  type: integer
+                  default: 10
+                learningRate:
+                  type: number
+                  default: 0.001
+      responses:
+        '200':
+          description: Training completed
+  /api/predict/{index}:
+    get:
+      summary: Get live prediction for drift switch index
+      parameters:
+        - name: index
+          in: path
+          required: true
+          schema:
+            type: integer
+            enum: [10, 20, 30]
+        - name: features
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Prediction result
+  /api/chat:
+    post:
+      summary: Chat with the agent
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                message:
+                  type: string
+                sessionId:
+                  type: string
+      responses:
+        '200':
+          description: Chat response
+  /api/memory/query:
+    get:
+      summary: Query long-term memory
+      parameters:
+        - name: text
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Memory results
+  /api/status:
+    get:
+      summary: System health and status
+      responses:
+        '200':
+          description: System status
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-Key
+security:
+  - ApiKeyAuth: []

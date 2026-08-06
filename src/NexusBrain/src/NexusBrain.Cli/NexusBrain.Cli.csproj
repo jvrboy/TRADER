@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\NexusBrain.Orchestrator\NexusBrain.Orchestrator.csproj" />
+    <ProjectReference Include="..\NexusBrain.Agents\NexusBrain.Agents.csproj" />
+    <ProjectReference Include="..\NexusBrain.Brain\NexusBrain.Brain.csproj" />
+    <ProjectReference Include="..\NexusBrain.Memory\NexusBrain.Memory.csproj" />
+    <ProjectReference Include="..\NexusBrain.Divergence\NexusBrain.Divergence.csproj" />
+    <ProjectReference Include="..\NexusBrain.Forex\NexusBrain.Forex.csproj" />
+    <ProjectReference Include="..\NexusBrain.Indicators\NexusBrain.Indicators.csproj" />
+    <ProjectReference Include="..\NexusBrain.Deriv\NexusBrain.Deriv.csproj" />
+    <ProjectReference Include="..\NexusBrain.Core\NexusBrain.Core.csproj" />
+  </ItemGroup>
+</Project>

@@ -1,0 +1,16 @@
+# Build outputs
+bin/
+obj/
+*.user
+
+# Runtime state (regenerated on training) — but keep the shipped pre-trained model
+data/brains/*.json
+!data/brains/nexus-primary.json
+data/knowledge/*.json
+!data/knowledge/semantic.json
+!data/knowledge/episodic.json
+
+# IDE
+.vs/
+.vscode/
+.idea/

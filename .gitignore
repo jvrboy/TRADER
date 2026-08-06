@@ -1,6 +1,10 @@
-## .NET MAUI / Xamarin / .NET gitignore
+## =========================================================================
+## TRADER Monorepo .gitignore
+## =========================================================================
 
-# Build results
+# --------------------------------------------------------------------------
+# .NET / C# / MAUI / Avalonia Build Artifacts
+# --------------------------------------------------------------------------
 [Dd]ebug/
 [Dd]ebugPublic/
 [Rr]elease/
@@ -15,14 +19,17 @@ bld/
 [Oo]bj/
 [Ll]og/
 [Ll]ogs/
-
-# Visual Studio
-.vs/
+*.g.cs
+*.g.i.cs
+*.Designer.cs
 *.user
 *.suo
 *.userosscache
 *.sln.docstates
 *.userprefs
+.vs/
+.idea/
+*.sln.iml
 
 # NuGet
 *.nupkg
@@ -32,11 +39,68 @@ bld/
 *.nuget.props
 *.nuget.targets
 
-# Rider
-.idea/
-*.sln.iml
+# Mobile Platforms (Android / iOS / macOS Catalyst)
+*.apk
+*.aab
+*.ap_
+*.dex
+local.properties
+*.ipa
+*.xcarchive
+*.xcworkspace/xcuserdata
+*.xcuserstate
+DerivedData/
 
-# macOS
+# --------------------------------------------------------------------------
+# Java / Maven / Gradle Build Artifacts
+# --------------------------------------------------------------------------
+target/
+*.class
+*.jar
+*.war
+*.ear
+*.nar
+.mvn/timing.properties
+.mvn/wrapper/maven-wrapper.jar
+.gradle/
+build/
+!src/**/build/
+.settings/
+.project
+.classpath
+
+# --------------------------------------------------------------------------
+# Python Build Artifacts & Virtual Environments
+# --------------------------------------------------------------------------
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+.venv/
+ENV/
+env.bak/
+venv.bak/
+.pytest_cache/
+.coverage
+htmlcov/
+*.egg-info/
+dist/
+
+# --------------------------------------------------------------------------
+# Node.js / JavaScript Artifacts
+# --------------------------------------------------------------------------
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# --------------------------------------------------------------------------
+# Operating System & IDE Files
+# --------------------------------------------------------------------------
 .DS_Store
 .AppleDouble
 .LSOverride
@@ -49,32 +113,18 @@ Icon?
 .Trashes
 .VolumeIcon.icns
 .com.apple.timemachine.donotpresent
-
-# Android
-*.apk
-*.aab
-*.ap_
-*.dex
-local.properties
-
-# iOS
-*.ipa
-*.xcarchive
-*.xcworkspace/xcuserdata
-*.xcuserstate
-DerivedData/
-
-# Windows
 Thumbs.db
 ehthumbs.db
 Desktop.ini
 $RECYCLE.BIN/
+*.tmp
+*.bak
+*.swp
+*~
 
-# Generated files
-*.g.cs
-*.g.i.cs
-*.Designer.cs
-
-# Sensitive data
+# --------------------------------------------------------------------------
+# Sensitive / Local Configuration Data
+# --------------------------------------------------------------------------
 appsettings.local.json
 secrets.json
+*.local.json
