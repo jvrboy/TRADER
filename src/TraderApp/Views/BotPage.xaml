@@ -74,18 +74,20 @@
         </Frame>
 
         <!-- Tab Selector -->
-        <Grid Grid.Row="2" ColumnDefinitions="*,*" BackgroundColor="{StaticResource BackgroundInput}"
-              Margin="12,8" CornerRadius="12" Padding="4" HeightRequest="44">
-            <Button Grid.Column="0" Text="LIVE"
-                    BackgroundColor="{StaticResource Primary}"
-                    TextColor="{StaticResource BackgroundDark}"
-                    FontAttributes="Bold" FontSize="14"
-                    CornerRadius="8"/>
-            <Button Grid.Column="1" Text="HISTORY"
-                    BackgroundColor="Transparent"
-                    TextColor="{StaticResource TextSecondary}"
-                    FontSize="14" CornerRadius="8"/>
-        </Grid>
+        <Border Grid.Row="2" StrokeShape="RoundRectangle 12" StrokeThickness="0"
+                BackgroundColor="{StaticResource BackgroundInput}" Padding="4" Margin="12,8" HeightRequest="44">
+            <Grid ColumnDefinitions="*,*">
+                <Button Grid.Column="0" Text="LIVE"
+                        BackgroundColor="{StaticResource Primary}"
+                        TextColor="{StaticResource BackgroundDark}"
+                        FontAttributes="Bold" FontSize="14"
+                        CornerRadius="8"/>
+                <Button Grid.Column="1" Text="HISTORY"
+                        BackgroundColor="Transparent"
+                        TextColor="{StaticResource TextSecondary}"
+                        FontSize="14" CornerRadius="8"/>
+            </Grid>
+        </Border>
 
         <!-- Open Trades List -->
         <RefreshView Grid.Row="3"
