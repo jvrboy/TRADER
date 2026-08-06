@@ -38,13 +38,13 @@ jobs:
       run: dotnet workload install maui-windows --skip-sign-check
 
     - name: Restore
-      run: dotnet restore src/TraderApp/TraderUI.csproj -p:TargetFramework=net8.0-windows10.0.19041.0 -r win-x64
+      run: dotnet restore src/TraderApp/TraderUI.csproj -p:TargetFrameworks=net8.0-windows10.0.19041.0 -r win-x64
 
     - name: Build unsigned EXE
       run: >
         dotnet publish src/TraderApp/TraderUI.csproj
         -c Release
-        -p:TargetFramework=net8.0-windows10.0.19041.0
+        -p:TargetFrameworks=net8.0-windows10.0.19041.0
         -p:RuntimeIdentifier=win-x64
         -p:WindowsPackageType=None
         -p:SelfContained=true
