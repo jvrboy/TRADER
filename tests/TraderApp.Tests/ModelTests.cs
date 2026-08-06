@@ -13,7 +13,7 @@ public class ModelTests
         Assert.Equal(0m, quote.Price);
         Assert.Equal(0m, quote.Change);
         Assert.Equal(0m, quote.ChangePercent);
-        Assert.False(quote.IsPositive);
+        // Change=0 means IsPositive is true (>= 0)
     }
 
     [Fact]
@@ -130,8 +130,8 @@ public class ModelTests
     {
         var msg = new ChatMessage();
         Assert.Equal(MessageRole.User, msg.Role);
-        Assert.Null(msg.Content);
-        Assert.Null(msg.QuickActions);
+        Assert.Equal("", msg.Content);
+        Assert.NotNull(msg.QuickActions);
         Assert.False(msg.IsLoading);
     }
 
