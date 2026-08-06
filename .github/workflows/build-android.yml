@@ -1,0 +1,62 @@
+name: Build Unsigned APK
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'src/TraderApp/**'
+      - '.github/workflows/build-android.yml'
+
+concurrency:
+  group: android-build
+  cancel-in-progress: true
+
+jobs:
+  build-android:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Setup .NET 8
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '8.0.x'
+
+    - name: Install Android workload
+      run: dotnet workload install android --skip-sign-check
+
+    - name: Restore dependencies
+      run: dotnet restore src/TraderApp/TraderUI.csproj -f net8.0-android
+
+    - name: Build unsigned APK
+      run: >
+        dotnet publish src/TraderApp/TraderUI.csproj
+        -c Release
+        -f net8.0-android
+        -p:AndroidPackageFormat=apk
+        -p:AndroidSignKeyStore=
+        -p:RuntimeIdentifier=android-arm64
+        --no-restore
+
+    - name: Find and upload APK
+      run: |
+        APK_PATH=$(find src/TraderApp/bin/Release -name "*.apk" -type f | head -1)
+        if [ -z "$APK_PATH" ]; then
+          echo "ERROR: No APK found"
+          find src/TraderApp/bin/Release -type f | head -30
+          exit 1
+        fi
+        echo "APK_PATH=$APK_PATH" >> $GITHUB_ENV
+        echo "Found APK: $APK_PATH"
+        ls -lh "$APK_PATH"
+
+    - name: Upload APK artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: TRADER-Android-APK
+        path: ${{ env.APK_PATH }}
+        retention-days: 30
