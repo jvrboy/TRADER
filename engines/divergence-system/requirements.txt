@@ -1,0 +1,10 @@
+# Core (required)
+numpy>=1.24
+pandas>=2.0
+
+# Plotting (optional — for chart output)
+matplotlib>=3.7
+
+# Data providers (optional — pick what you need)
+yfinance>=0.2.40   # stocks / ETFs / FX / crypto via Yahoo Finance
+ccxt>=4.0          # crypto exchanges (Binance, Bybit, Coinbase, ...)
