@@ -38,13 +38,13 @@ jobs:
       run: dotnet workload install maui-android --skip-sign-check
 
     - name: Restore
-      run: dotnet restore src/TraderApp/TraderUI.csproj --framework net8.0-android
+      run: dotnet restore TRADER.sln -p:TargetFramework=net8.0-android
 
     - name: Build unsigned APK
       run: >
         dotnet publish src/TraderApp/TraderUI.csproj
         -c Release
-        --framework net8.0-android
+        -p:TargetFramework=net8.0-android
         -p:AndroidPackageFormat=apk
         -p:AndroidSignKeyStore=
         -p:RuntimeIdentifier=android-arm64
@@ -52,10 +52,11 @@ jobs:
 
     - name: Locate APK
       run: |
-        find src/TraderApp/bin -name "*.apk" -type f 2>/dev/null
         APK_PATH=$(find src/TraderApp/bin -name "*.apk" -type f 2>/dev/null | head -1)
         if [ -z "$APK_PATH" ]; then
-          echo "ERROR: No APK found"; find src/TraderApp/bin -type f | head -30; exit 1
+          echo "ERROR: No APK found"
+          find src/TraderApp/bin -type f | head -30
+          exit 1
         fi
         echo "APK_PATH=$APK_PATH" >> "$GITHUB_ENV"
         ls -lh "$APK_PATH"
