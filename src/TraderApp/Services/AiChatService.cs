@@ -7,17 +7,19 @@ using TraderUI.Models;
 namespace TraderUI.Services;
 
 /// <summary>
-/// AI Chat service supporting OpenAI, Anthropic, Gemini, Grok, DeepSeek, Mistral, Cohere, Together, Perplexity, HuggingFace.
-/// Integrates with the NEXUS/Nova Brain backend for market analysis.
+/// Production AI Chat service supporting OpenAI, Anthropic, Gemini, Grok, DeepSeek, Mistral, Cohere, Together, Perplexity,
+/// and native on-device Agentic Quantitative Tools execution.
 /// </summary>
 public class AiChatService : IAiChatService
 {
     private readonly ISettingsService _settings;
+    private readonly IAgenticToolsService _tools;
     private readonly HttpClient _http;
 
-    public AiChatService(ISettingsService settings)
+    public AiChatService(ISettingsService settings, IAgenticToolsService tools)
     {
         _settings = settings;
+        _tools = tools;
         _http = new HttpClient { Timeout = TimeSpan.FromSeconds(60) };
     }
 
@@ -26,6 +28,13 @@ public class AiChatService : IAiChatService
         var settings = await _settings.GetSettingsAsync();
         var activeProvider = provider ?? settings.SelectedAiProvider;
         var activeModel = model ?? settings.SelectedAiModel;
+
+        // Check if message asks for a quantitative tool calculation
+        var toolResult = await TryExecuteToolQueryAsync(message);
+        if (toolResult != null)
+        {
+            return toolResult;
+        }
 
         return activeProvider.ToLower() switch
         {
@@ -44,13 +53,12 @@ public class AiChatService : IAiChatService
 
     public async IAsyncEnumerable<string> StreamMessageAsync(string message, List<ChatMessage> history)
     {
-        // Streaming implementation - yields chunks
         var response = await SendMessageAsync(message, history);
         var words = response.Split(' ');
         foreach (var word in words)
         {
             yield return word + " ";
-            await Task.Delay(30);
+            await Task.Delay(25);
         }
     }
 
@@ -92,6 +100,84 @@ public class AiChatService : IAiChatService
     {
         var prompt = $"Provide a brief current market summary for {symbol} including key technical levels, market sentiment, and any important news or events affecting the price.";
         return await SendMessageAsync(prompt, new List<ChatMessage>());
+    }
+
+    // ==================== AGENTIC QUANTITATIVE TOOL DISPATCH ====================
+
+    private async Task<string?> TryExecuteToolQueryAsync(string message)
+    {
+        var lower = message.ToLowerInvariant();
+
+        if (lower.Contains("fibonacci") || lower.Contains("golden pocket"))
+        {
+            var symbol = ExtractSymbol(message) ?? "EURUSD";
+            var res = await _tools.InvokeToolAsync("analysis.fibonacci", new Dictionary<string, string> { ["symbol"] = symbol });
+            return $"📊 **Fibonacci Retracement Analysis**\n\n{res.Message}\n\nKey Strategy: Look for confluence entries in the 61.8% Golden Pocket with stop loss placed beyond the 78.6% level.";
+        }
+
+        if (lower.Contains("smc") || lower.Contains("smart money") || lower.Contains("fair value gap") || lower.Contains("fvg"))
+        {
+            var symbol = ExtractSymbol(message) ?? "EURUSD";
+            var res = await _tools.InvokeToolAsync("analysis.smc", new Dictionary<string, string> { ["symbol"] = symbol });
+            return $"🏛️ **Smart Money Concepts (SMC) Scan**\n\n{res.Message}\n\nInstitutional Order Flow: Look for market displacement out of the identified liquidity pools into unfilled Fair Value Gaps.";
+        }
+
+        if (lower.Contains("mtf") || lower.Contains("multi-timeframe") || lower.Contains("trend alignment"))
+        {
+            var symbol = ExtractSymbol(message) ?? "EURUSD";
+            var res = await _tools.InvokeToolAsync("analysis.mtf", new Dictionary<string, string> { ["symbol"] = symbol });
+            return $"⚡ **Multi-Timeframe Trend Confluence**\n\n{res.Message}\n\nConfluence Insight: Align your lower-timeframe execution triggers exclusively in the direction of the dominant higher-timeframe trend.";
+        }
+
+        if (lower.Contains("pivot") || lower.Contains("camarilla"))
+        {
+            var symbol = ExtractSymbol(message) ?? "EURUSD";
+            var res = await _tools.InvokeToolAsync("analysis.pivots", new Dictionary<string, string> { ["symbol"] = symbol });
+            return $"🎯 **Intraday Pivot Analysis**\n\n{res.Message}";
+        }
+
+        if (lower.Contains("position size") || lower.Contains("kelly"))
+        {
+            var res = await _tools.InvokeToolAsync("risk.positionsize", new Dictionary<string, string>
+            {
+                ["accountEquity"] = "100000", ["entry"] = "1.0850", ["stopLoss"] = "1.0780", ["model"] = "half-kelly"
+            });
+            return $"⚖️ **Quantitative Position Sizing (Half-Kelly)**\n\n{res.Message}\n\nRisk Management Note: Sizing is mathematically capped to avoid ruin while optimizing geometric equity growth.";
+        }
+
+        if (lower.Contains("greek") || lower.Contains("black scholes") || lower.Contains("delta"))
+        {
+            var res = await _tools.InvokeToolAsync("analysis.greeks", new Dictionary<string, string>
+            {
+                ["spot"] = "100", ["strike"] = "105", ["daysToExpiry"] = "30", ["optionType"] = "call"
+            });
+            return $"📈 **Options Pricing & Greeks**\n\n{res.Message}";
+        }
+
+        if (lower.Contains("elliott wave") || lower.Contains("wave 3") || lower.Contains("ewo"))
+        {
+            var symbol = ExtractSymbol(message) ?? "EURUSD";
+            var res = await _tools.InvokeToolAsync("analysis.elliottwave", new Dictionary<string, string> { ["symbol"] = symbol });
+            return $"🌊 **Elliott Wave Oscillator Analysis**\n\n{res.Message}";
+        }
+
+        if (lower.Contains("arbitrage") || lower.Contains("stat arb") || lower.Contains("spread"))
+        {
+            var res = await _tools.InvokeToolAsync("analysis.arbitrage", new Dictionary<string, string>
+            {
+                ["symbolA"] = "EURUSD", ["symbolB"] = "GBPUSD"
+            });
+            return $"🔗 **Statistical Arbitrage & Spread Z-Score**\n\n{res.Message}";
+        }
+
+        return null;
+    }
+
+    private static string? ExtractSymbol(string message)
+    {
+        var words = message.ToUpperInvariant().Split(new[] { ' ', ',', ':', '?' }, StringSplitOptions.RemoveEmptyEntries);
+        var known = new[] { "EURUSD", "GBPUSD", "USDJPY", "USDCAD", "AUDUSD", "BTCUSD", "ETHUSD", "XAUUSD", "1HZ10V", "1HZ25V", "1HZ50V", "1HZ75V", "1HZ100V", "R_100", "CRASH900", "BOOM1000", "US500", "NAS100" };
+        return words.FirstOrDefault(w => known.Contains(w));
     }
 
     // ==================== PROVIDER IMPLEMENTATIONS ====================
@@ -259,7 +345,7 @@ public class AiChatService : IAiChatService
     {
         var messages = new List<object>
         {
-            new { role = "system", content = "You are TRADER AI, an expert trading assistant. You analyze markets, provide signals, explain strategies, and help traders make informed decisions. You have access to technical analysis tools including RSI, MACD, EMA, Bollinger Bands, divergence detection, and a 500-agent AI swarm for comprehensive market analysis." }
+            new { role = "system", content = "You are TRADER AI, an expert trading assistant with access to 31 quantitative financial analysis tools including Fibonacci Retracements, Smart Money Concepts (FVG & Order Blocks), Multi-Timeframe Confluence, Pivot Points, Kelly Position Sizing, Options Greeks, and a 500-agent AI swarm analyzing Deriv and Forex markets." }
         };
         messages.AddRange(history.TakeLast(10).Select(m => (object)new
         {
@@ -272,18 +358,18 @@ public class AiChatService : IAiChatService
 
     private async Task<string> GenerateLocalResponseAsync(string message, List<ChatMessage> history)
     {
-        await Task.Delay(500); // Simulate processing
+        await Task.Delay(300);
         var lower = message.ToLower();
         if (lower.Contains("btc") || lower.Contains("bitcoin"))
-            return "Bitcoin (BTCUSD) is showing interesting price action. Key resistance at $68,000 and support at $65,000. RSI is at 58, suggesting moderate bullish momentum. Consider the 4H chart for entry confirmation. Set alerts at key levels.";
+            return "Bitcoin (BTCUSD) is trading with strong momentum. Support at $65,000 and resistance at $68,500. RSI is at 58. Consider scaling in on 4H support pullbacks.";
         if (lower.Contains("eur") || lower.Contains("eurusd"))
-            return "EURUSD is consolidating near 1.0850. The pair faces resistance at 1.0900 (200 EMA). RSI divergence detected on the 1H chart. Watch for a breakout above 1.0870 for bullish continuation, or a break below 1.0820 for bearish momentum.";
+            return "EURUSD is holding near 1.0850. Multi-timeframe trend alignment shows neutral-to-bullish consolidation. Key pivot support at 1.0820 with resistance at 1.0900.";
+        if (lower.Contains("deriv") || lower.Contains("volatility") || lower.Contains("1hz"))
+            return "Deriv Synthetics (Volatility 10–100 (1s), Crash/Boom, Jump Indices) are streaming live ticks via the default public WebSocket API (app_id=1089). Use the Quotes or Chart tab to view real-time price action.";
         if (lower.Contains("gold") || lower.Contains("xau"))
-            return "Gold (XAUUSD) remains in a bullish trend above $2,300. Key support at $2,320 with resistance at $2,380. The AI swarm analysis shows 73% bullish consensus across 500 agents. Consider buying dips near support with SL below $2,300.";
+            return "Gold (XAUUSD) continues in an upward channel above $2,320. Swarm consensus is 74% bullish with strong support near $2,300.";
         if (lower.Contains("signal"))
-            return "I can generate trading signals for any instrument. Use the Signals tab for live AI-generated signals from our 500-agent swarm analyzing 1,145 indicators. You can also ask me: 'Generate a signal for EURUSD 4H' for an instant analysis.";
-        if (lower.Contains("indicator") || lower.Contains("rsi") || lower.Contains("macd"))
-            return "Our backend includes 1,145 technical indicators powered by the Deriv AI Swarm. Key indicators available: RSI, MACD, EMA, SMA, Bollinger Bands, Stochastic, ATR, VWAP, Volume Profile, Fibonacci, Pivot Points, and many more. Use the Chart tab to overlay any indicator.";
-        return "I'm TRADER AI, your intelligent trading assistant. I can help you:\n\n• Analyze any market or instrument\n• Generate trading signals\n• Explain technical indicators\n• Review your trading strategy\n• Analyze chart patterns\n• Provide market summaries\n\nAdd your AI API key in Settings to unlock full AI capabilities. What would you like to analyze?";
+            return "You can generate live trading signals for any symbol from the Signals tab or ask me: 'Analyze SMC on EURUSD' or 'Calculate Fibonacci on 1HZ50V'.";
+        return "I'm TRADER AI, your intelligent quantitative trading assistant with live Deriv market streams and 31 financial analysis tools. Try asking:\n\n• \"Analyze Fibonacci on EURUSD\"\n• \"Scan SMC on 1HZ50V\"\n• \"Calculate Multi-Timeframe Trend for BTCUSD\"\n• \"Compute Position Size for $100k account\"\n\nWhat would you like to analyze?";
     }
 }
