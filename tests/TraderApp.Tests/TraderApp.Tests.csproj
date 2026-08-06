@@ -20,7 +20,6 @@
   <ItemGroup>
     <Compile Include="../../src/TraderApp/Models/Models.cs" Link="Models/Models.cs" />
     <Compile Include="../../src/TraderApp/Services/IServices.cs" Link="Services/IServices.cs" />
-    <Compile Include="../../src/TraderApp/Services/LocalStorageService.cs" Link="Services/LocalStorageService.cs" />
   </ItemGroup>
 
 </Project>

@@ -52,7 +52,7 @@ public class ModelTests
     {
         var quote = new Quote { ChangePercent = 2.567m };
         var display = quote.ChangePercentDisplay;
-        Assert.StartsWith("+");
+        Assert.StartsWith("+", display, StringComparison.Ordinal);
         Assert.Contains("%", display);
     }
 
