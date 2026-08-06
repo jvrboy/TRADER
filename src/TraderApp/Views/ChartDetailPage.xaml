@@ -2,6 +2,7 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:vm="clr-namespace:TraderUI.ViewModels"
+             xmlns:models="clr-namespace:TraderUI.Models"
              x:Class="TraderUI.Views.ChartDetailPage"
              x:DataType="vm:ChartViewModel"
              Title="Full Chart">
@@ -21,7 +22,7 @@
             <ScrollView Grid.Column="1" Orientation="Horizontal" HorizontalScrollBarVisibility="Never">
                 <FlexLayout BindableLayout.ItemsSource="{Binding Timeframes}" Direction="Row">
                     <BindableLayout.ItemTemplate>
-                        <DataTemplate x:DataType="TraderUI.Models.Timeframe">
+                        <DataTemplate x:DataType="models:Timeframe">
                             <Frame Style="{StaticResource ChipFrame}" Margin="2,0">
                                 <Label Text="{Binding Label}" FontSize="13" TextColor="{StaticResource TextSecondary}"/>
                             </Frame>
