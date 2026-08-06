@@ -4,41 +4,39 @@
        xmlns:views="clr-namespace:TraderUI.Views"
        x:Class="TraderUI.AppShell"
        Shell.NavBarIsVisible="False"
-       FlyoutBehavior="Disabled">
+       FlyoutBehavior="Disabled"
+       Shell.TabBarBackgroundColor="#0F1624"
+       Shell.TabBarTitleColor="#00D4FF"
+       Shell.TabBarUnselectedColor="#4A5568">
 
     <TabBar>
         <!-- AI Chat Tab -->
         <ShellContent
             Title="AI Chat"
-            Icon="icon_chat.png"
             ContentTemplate="{DataTemplate views:AiChatPage}"
             Route="AiChatPage" />
 
         <!-- Quotes Tab -->
         <ShellContent
             Title="Quotes"
-            Icon="icon_quotes.png"
             ContentTemplate="{DataTemplate views:QuotesPage}"
             Route="QuotesPage" />
 
         <!-- Chart Tab -->
         <ShellContent
             Title="Chart"
-            Icon="icon_chart.png"
             ContentTemplate="{DataTemplate views:ChartPage}"
             Route="ChartPage" />
 
         <!-- Signals Tab -->
         <ShellContent
             Title="Signals"
-            Icon="icon_signals.png"
             ContentTemplate="{DataTemplate views:SignalsPage}"
             Route="SignalsPage" />
 
         <!-- Bot Tab -->
         <ShellContent
             Title="Bot"
-            Icon="icon_bot.png"
             ContentTemplate="{DataTemplate views:BotPage}"
             Route="BotPage" />
     </TabBar>
