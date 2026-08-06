@@ -42,10 +42,41 @@ jobs:
     - name: Select Xcode
       run: |
         ls /Applications/ | grep Xcode
-        sudo xcode-select -s /Applications/Xcode_16.xt/Xcode.app/Contents/Developer 2>/dev/null ||
-        sudo xcode-select -s /Applications/Xcode_15.4.xt/Xcode.app/Contents/Developer 2>/dev/null ||
-        echo "Using default Xcode"
+        XCODE_PATH=$(ls -d /Applications/Xcode*.app/Contents/Developer 2>/dev/null | sort -V | tail -1)
+        if [ -n "$XCODE_PATH" ]; then
+          sudo xcode-select -s "$XCODE_PATH"
+        fi
         xcodebuild -version
+
+    - name: Create self-signed signing certificate
+      run: |
+        security create-keychain -p "" build.keychain-darwin
+        security default-keychain -s build.keychain-darwin
+        security unlock-keychain -p "" build.keychain-darwin
+
+        # Generate a self-signed certificate for CI signing
+        openssl genrsa -out /tmp/signing.key 2048
+        openssl req -new -key /tmp/signing.key \
+          -out /tmp/signing.csr \
+          -subj "/CN=TRADER CI/O=TRADER/C=US"
+        openssl x509 -req -in /tmp/signing.csr \
+          -signkey /tmp/signing.key \
+          -out /tmp/signing.crt \
+          -days 3650
+        openssl pkcs12 -export \
+          -inkey /tmp/signing.key \
+          -in /tmp/signing.crt \
+          -out /tmp/signing.p12 \
+          -passout pass:
+
+        security import /tmp/signing.p12 \
+          -k build.keychain-darwin \
+          -P "" \
+          -T /usr/bin/codesign
+        security set-key-partition-list \
+          -S apple-tool:,apple: \
+          -s -k "" build.keychain-darwin
+        security list-keychains -s build.keychain-darwin
 
     - name: Restore
       run: dotnet restore TRADER.sln -p:TargetFramework=net8.0-ios
@@ -57,9 +88,9 @@ jobs:
         -p:TargetFramework=net8.0-ios
         -p:RuntimeIdentifier=ios-arm64
         -p:BuildIpa=true
-        -p:CodesignKey=
-        -p:CodesignProvision=
         -p:ArchiveOnBuild=false
+        -p:CodesignKey="iPhone Distribution"
+        -p:CodesignProvision=
         --no-restore
       env:
         CODESIGNING_ALLOWED: "0"
