@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.traderapp.trader">
-  <uses-sdk android:minSdkVersion="21" android:targetSdkVersion="34" />
+  <uses-sdk android:minSdkVersion="26" android:targetSdkVersion="34" />
   <application android:allowBackup="true" android:icon="@mipmap/appicon" android:label="TRADER" android:supportsRtl="true" android:theme="@style/Maui.MainTheme">
     <activity android:name=".MainActivity" android:exported="true" android:theme="@style/Maui.SplashTheme" android:configChanges="orientation|screenSize|uiMode|screenLayout|smallestScreenSize|density">
       <intent-filter>
