@@ -21,21 +21,23 @@
         <!-- Tab Selector + Filters -->
         <StackLayout Grid.Row="1" BackgroundColor="{StaticResource BackgroundSurface}" Padding="12,0,12,12">
             <!-- LIVE / HISTORY Tabs -->
-            <Grid ColumnDefinitions="*,*" BackgroundColor="{StaticResource BackgroundInput}"
-                  CornerRadius="12" Padding="4" Margin="0,0,0,10">
-                <Button Grid.Column="0" Text="LIVE"
-                        BackgroundColor="{StaticResource Primary}"
-                        TextColor="{StaticResource BackgroundDark}"
-                        FontAttributes="Bold" FontSize="14"
-                        CornerRadius="8" HeightRequest="40"
-                        Command="{Binding RefreshCommand}"/>
-                <Button Grid.Column="1" Text="HISTORY"
-                        BackgroundColor="Transparent"
-                        TextColor="{StaticResource TextSecondary}"
-                        FontSize="14"
-                        CornerRadius="8" HeightRequest="40"
-                        Command="{Binding RefreshCommand}"/>
-            </Grid>
+            <Border StrokeShape="RoundRectangle 12" StrokeThickness="0"
+                    BackgroundColor="{StaticResource BackgroundInput}" Padding="4" Margin="0,0,0,10">
+                <Grid ColumnDefinitions="*,*">
+                    <Button Grid.Column="0" Text="LIVE"
+                            BackgroundColor="{StaticResource Primary}"
+                            TextColor="{StaticResource BackgroundDark}"
+                            FontAttributes="Bold" FontSize="14"
+                            CornerRadius="8" HeightRequest="40"
+                            Command="{Binding RefreshCommand}"/>
+                    <Button Grid.Column="1" Text="HISTORY"
+                            BackgroundColor="Transparent"
+                            TextColor="{StaticResource TextSecondary}"
+                            FontSize="14"
+                            CornerRadius="8" HeightRequest="40"
+                            Command="{Binding RefreshCommand}"/>
+                </Grid>
+            </Border>
 
             <!-- Category Filters -->
             <ScrollView Orientation="Horizontal" HorizontalScrollBarVisibility="Never">
