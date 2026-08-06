@@ -48,13 +48,13 @@ jobs:
         xcodebuild -version
 
     - name: Restore
-      run: dotnet restore src/TraderApp/TraderUI.csproj --framework net8.0-ios
+      run: dotnet restore TRADER.sln -p:TargetFramework=net8.0-ios
 
     - name: Build unsigned IPA
       run: >
         dotnet publish src/TraderApp/TraderUI.csproj
         -c Release
-        --framework net8.0-ios
+        -p:TargetFramework=net8.0-ios
         -p:RuntimeIdentifier=ios-arm64
         -p:BuildIpa=true
         -p:CodesignKey=
